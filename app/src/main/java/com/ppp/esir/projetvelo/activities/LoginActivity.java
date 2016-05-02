@@ -1,4 +1,4 @@
-package com.ppp.esir.projetvelo;
+package com.ppp.esir.projetvelo.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -39,6 +39,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.ppp.esir.projetvelo.R;
+import com.ppp.esir.projetvelo.requetes.Requete;
+import com.ppp.esir.projetvelo.utils.Datacontainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Datacontainer.setActivity(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -112,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Configure sign-in to request the user's ID, email address, and basic
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("282502110397-t8ojs515gmaq1mhprsn4u8d59q1r83mu.apps.googleusercontent.com")
+                .requestServerAuthCode("282502110397-luiebuv7ie9f1veuafmidrtij18mlnc7.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -143,12 +147,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // There's no immediate result ready, displays some progress indicator and waits for the
             // async callback.
-            showProgressIndicator();
+            showProgress(true);
             pendingResult.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(@NonNull GoogleSignInResult result) {
                     handleSignInResult(result);
-                    hideProgressIndicator();
+                    showProgress(false);
                 }
             });
         }
@@ -218,17 +222,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        Log.d(this.getClass().getName(), "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-            updateUI(true);
+            // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+            //updateUI(true);
             //TODO INTEGRATION A BDD
+
         } else {
             // Signed out, show unauthenticated UI.
-            updateUI(false);
+            //updateUI(false);
         }
+        startActivity(new Intent(getBaseContext(), BluetoothActivity.class));
     }
 
     /**
@@ -405,7 +411,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
+            if (Requete.getUserAuthentification(mEmail, mPassword)) {
+                return true;
+            }
             try {
                 // Simulate network access.
                 Thread.sleep(2000);

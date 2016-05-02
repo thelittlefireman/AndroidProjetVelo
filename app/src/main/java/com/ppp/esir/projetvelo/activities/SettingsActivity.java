@@ -1,4 +1,4 @@
-package com.ppp.esir.projetvelo;
+package com.ppp.esir.projetvelo.activities;
 
 
 import android.annotation.TargetApi;
@@ -19,6 +19,9 @@ import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+
+import com.ppp.esir.projetvelo.R;
+import com.ppp.esir.projetvelo.utils.Datacontainer;
 
 import java.util.List;
 
@@ -120,6 +123,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+        Datacontainer.setActivity(this);
     }
 
     /**

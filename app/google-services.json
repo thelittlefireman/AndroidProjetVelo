@@ -21,6 +21,10 @@
           }
         },
         {
+          "client_id": "282502110397-jmrtd1ho7sgh7nigdi0efodl45ca6i3m.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "282502110397-luiebuv7ie9f1veuafmidrtij18mlnc7.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -38,7 +42,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "282502110397-luiebuv7ie9f1veuafmidrtij18mlnc7.apps.googleusercontent.com",
+              "client_id": "282502110397-jmrtd1ho7sgh7nigdi0efodl45ca6i3m.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

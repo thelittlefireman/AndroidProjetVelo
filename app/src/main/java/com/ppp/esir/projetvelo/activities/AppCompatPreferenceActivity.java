@@ -1,4 +1,4 @@
-package com.ppp.esir.projetvelo;
+package com.ppp.esir.projetvelo.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
