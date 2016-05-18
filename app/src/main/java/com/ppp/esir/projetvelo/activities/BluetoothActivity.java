@@ -34,12 +34,15 @@ import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
 
 public class BluetoothActivity extends AppCompatActivity {
 
+    private BluetoothUtils mBluetoothUtils;
+    private BluetoothLeScanner mScanner;
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 startActivity(new Intent(context, ControleVeloActivity.class));
+                mScanner.scanLeDevice(-1, false);
                 finish();
                 Log.i(this.getClass().getName(), "bluetooth connecter");
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
@@ -51,8 +54,6 @@ public class BluetoothActivity extends AppCompatActivity {
             }
         }
     };
-    private BluetoothUtils mBluetoothUtils;
-    private BluetoothLeScanner mScanner;
     private RecyclerViewAdapterListBuetoothDevices mLeDeviceListAdapter;
     private BluetoothLeDeviceStore mDeviceStore;
     private final ScanCallback mNormalScanCallback = new ScanCallback() {

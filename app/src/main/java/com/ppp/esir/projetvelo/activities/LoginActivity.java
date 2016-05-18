@@ -37,10 +37,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -130,6 +132,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestServerAuthCode("282502110397-luiebuv7ie9f1veuafmidrtij18mlnc7.apps.googleusercontent.com")
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .requestEmail()
                 .build();
 
@@ -138,6 +141,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Plus.API)
                 .build();
 
         signInButtonGoogle.setOnClickListener(new OnClickListener() {
@@ -278,6 +282,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String nom = acct.getDisplayName().split(" ")[0];
             String prenom = acct.getDisplayName().split(" ")[1];
             String email = acct.getEmail();
+            String birthday = person.getBirthday();
+            Log.i(this.getClass().getName(), "--------------------------------");
+            Log.i(this.getClass().getName(), "Display Name: " + person.getDisplayName());
+            Log.i(this.getClass().getName(), "Gender: " + person.getGender());
+            Log.i(this.getClass().getName(), "AboutMe: " + person.getAboutMe());
+            Log.i(this.getClass().getName(), "Birthday: " + person.getBirthday());
+            Log.i(this.getClass().getName(), "Current Location: " + person.getCurrentLocation());
+            Log.i(this.getClass().getName(), "Language: " + person.getLanguage());
         } else {
             // Signed out, show unauthenticated UI.
             //updateUI(false);

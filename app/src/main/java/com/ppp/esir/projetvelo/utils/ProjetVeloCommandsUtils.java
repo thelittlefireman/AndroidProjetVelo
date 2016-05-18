@@ -22,11 +22,22 @@ public class ProjetVeloCommandsUtils {
         sendMessage("bonjour");
     }
     public static void upAssistance() {
-
+        sendMessage("2");
+        getAssistance();
     }
 
     public static void downAssistance() {
-        //BluetoothUtils.getmSmoothBluetooth().send("down");
+        sendMessage("3");
+        getAssistance();
     }
 
+    public static void setAssistance(int i) {
+        if (i >= 0 && i <= 6) {
+            sendMessage("4" + String.valueOf(i));
+        }
+    }
+
+    public static void getAssistance() {
+        sendMessage("1");
+    }
 }
