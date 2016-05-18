@@ -17,7 +17,7 @@ import okhttp3.Response;
 public class RequeteConfigurator {
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
-    private static final String baseURL = "";
+    private static final String baseURL = "http://lebonnuage.istic.univ-rennes1.fr/projet_velo_web/CodeIgniter/index.php/";
 
     public static String sendRequeteJson(RequeteConfigurator.ApiRequete apiRequete, String json) {
         OkHttpClient client = new OkHttpClient();
@@ -59,8 +59,9 @@ public class RequeteConfigurator {
     }
 
     public enum ApiRequete {
-        AUTHENTIFICATION("us"),
-        sendSpeed("TWO");
+        AUTHENTIFICATION("user/authentification"),
+        INSCRIPTION("user/ceerUser"),
+        ADD_DEPLACEMENT("user/ajoutDeplacement");
 
         private final String text;
 

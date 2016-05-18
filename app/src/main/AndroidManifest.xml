@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- bluetooth -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -30,7 +31,13 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".activities.BluetoothActivity" />
-        <activity android:name=".activities.ControleVeloActivity"></activity>
+        <activity android:name=".activities.ControleVeloActivity" />
+
+        <service
+            android:name=".services.BluetoothLeService"
+            android:enabled="true" />
+
+        <activity android:name=".activities.InscriptionActivity"></activity>
     </application>
 
 </manifest>

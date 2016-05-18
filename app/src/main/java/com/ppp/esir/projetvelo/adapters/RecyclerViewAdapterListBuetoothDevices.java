@@ -1,5 +1,6 @@
 package com.ppp.esir.projetvelo.adapters;
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,27 +9,38 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ppp.esir.projetvelo.R;
-import com.ppp.esir.projetvelo.utils.BluetoothCommandsUtils;
+import com.ppp.esir.projetvelo.activities.BluetoothActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.palaima.smoothbluetooth.Device;
+import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
 
 /**
  * Created by thoma on 02/05/2016.
  */
-public class RecyclerViewAdapterListBuetoothDevices extends RecyclerView.Adapter<RecyclerViewAdapterListBuetoothDevices.RecyclerViewAdapterListBluetoothDevicesHolder> {
-    private List<Device> deviceList;
+public class RecyclerViewAdapterListBuetoothDevices extends CursorRecyclerAdapter<RecyclerViewAdapterListBuetoothDevices.RecyclerViewAdapterListBluetoothDevicesHolder> {
+    private BluetoothActivity bluetoothActivity;
 
-    public RecyclerViewAdapterListBuetoothDevices() {
-        deviceList = new ArrayList<>();
+    public RecyclerViewAdapterListBuetoothDevices(BluetoothActivity bluetoothActivity, final EasyObjectCursor<BluetoothLeDevice> cursor) {
+        super(cursor);
+        this.bluetoothActivity = bluetoothActivity;
 
     }
 
-    public List<Device> getDeviceList() {
-        return deviceList;
+    @SuppressWarnings("unchecked")
+    @Override
+    public EasyObjectCursor<BluetoothLeDevice> getCursor() {
+        return ((EasyObjectCursor<BluetoothLeDevice>) super.getCursor());
     }
+
+    public BluetoothLeDevice getItem(final int i) {
+        return getCursor().getItem(i);
+    }
+
+    @Override
+    public long getItemId(final int i) {
+        return i;
+    }
+
 
     @Override
     public RecyclerViewAdapterListBluetoothDevicesHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,22 +50,24 @@ public class RecyclerViewAdapterListBuetoothDevices extends RecyclerView.Adapter
         return new RecyclerViewAdapterListBluetoothDevicesHolder(itemView);
     }
 
+
     @Override
-    public void onBindViewHolder(RecyclerViewAdapterListBluetoothDevicesHolder holder, int position) {
-        final Device device = deviceList.get(position);
-        holder.getTextViewDeviceName().setText(device.getName());
-        holder.getTextViewMacAdress().setText(device.getAddress());
-        holder.getButtonConnectTo().setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolderCursor(RecyclerViewAdapterListBluetoothDevicesHolder holder, final Cursor cursor) {
+        final BluetoothLeDevice device = getCursor().getItem(cursor.getPosition());
+        holder.buttonConnectTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BluetoothCommandsUtils.getConnectionCallback().connectTo(device);
+                BluetoothLeDevice device = getCursor().getItem(cursor.getPosition());
+                bluetoothActivity.getmBluetoothLeService().connect(device.getAddress());
             }
         });
+        holder.textViewDeviceName.setText(device.getName());
+        holder.textViewMacAdress.setText(device.getAddress());
     }
 
     @Override
     public int getItemCount() {
-        return deviceList.size();
+        return getCursor().getCount();
     }
 
     public class RecyclerViewAdapterListBluetoothDevicesHolder extends RecyclerView.ViewHolder {

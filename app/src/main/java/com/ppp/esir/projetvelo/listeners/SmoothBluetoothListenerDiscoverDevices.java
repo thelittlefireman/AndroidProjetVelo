@@ -2,9 +2,8 @@ package com.ppp.esir.projetvelo.listeners;
 
 import android.content.Intent;
 
+import com.ppp.esir.projetvelo.activities.BluetoothActivity;
 import com.ppp.esir.projetvelo.activities.ControleVeloActivity;
-import com.ppp.esir.projetvelo.adapters.RecyclerViewAdapterListBuetoothDevices;
-import com.ppp.esir.projetvelo.utils.Datacontainer;
 
 import java.util.List;
 
@@ -15,10 +14,10 @@ import io.palaima.smoothbluetooth.SmoothBluetooth;
  * Created by thoma on 02/05/2016.
  */
 public class SmoothBluetoothListenerDiscoverDevices implements SmoothBluetooth.Listener {
-    private RecyclerViewAdapterListBuetoothDevices recyclerViewAdapterListBuetoothDevices;
+ private BluetoothActivity bluetoothActivity;
 
-    public SmoothBluetoothListenerDiscoverDevices(RecyclerViewAdapterListBuetoothDevices recyclerViewAdapterListBuetoothDevices) {
-        this.recyclerViewAdapterListBuetoothDevices = recyclerViewAdapterListBuetoothDevices;
+ public SmoothBluetoothListenerDiscoverDevices(BluetoothActivity bluetoothActivity) {
+  this.bluetoothActivity = bluetoothActivity;
     }
 
     @Override
@@ -38,7 +37,7 @@ public class SmoothBluetoothListenerDiscoverDevices implements SmoothBluetooth.L
 
     @Override
     public void onConnected(Device device) {
-        Datacontainer.getActivity().startActivity(new Intent(Datacontainer.getActivity(), ControleVeloActivity.class));
+     this.bluetoothActivity.startActivity(new Intent(this.bluetoothActivity, ControleVeloActivity.class));
     }
 
     @Override
@@ -53,12 +52,12 @@ public class SmoothBluetoothListenerDiscoverDevices implements SmoothBluetooth.L
 
     @Override
     public void onDiscoveryStarted() {
-
+     this.bluetoothActivity.getRefreshHelper().startLoading();
     }
 
     @Override
     public void onDiscoveryFinished() {
-
+     this.bluetoothActivity.getRefreshHelper().stopLoading();
     }
 
     @Override
@@ -68,9 +67,10 @@ public class SmoothBluetoothListenerDiscoverDevices implements SmoothBluetooth.L
 
     @Override
     public void onDevicesFound(List<Device> deviceList, SmoothBluetooth.ConnectionCallback connectionCallback) {
-        this.recyclerViewAdapterListBuetoothDevices.getDeviceList().clear();
-        this.recyclerViewAdapterListBuetoothDevices.getDeviceList().addAll(deviceList);
-        this.recyclerViewAdapterListBuetoothDevices.notifyDataSetChanged();
+     /*   BluetoothUtils.setConnectionCallback(connectionCallback);
+        this.bluetoothActivity.getRecyclerViewAdapterListBuetoothDevices().getDeviceList().clear();
+        this.bluetoothActivity.getRecyclerViewAdapterListBuetoothDevices().getDeviceList().addAll(deviceList);
+        this.bluetoothActivity.getRecyclerViewAdapterListBuetoothDevices().notifyDataSetChanged();*/
     }
 
     @Override

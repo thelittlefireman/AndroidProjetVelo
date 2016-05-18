@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.ppp.esir.projetvelo"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -30,4 +30,9 @@ dependencies {
     compile 'com.android.support:support-v4:23.3.0'
     compile 'io.palaima:smoothbluetooth:0.2.0-SNAPSHOT'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.github.nicolasjafelle:refreshmenuitem:1.0'
+    compile 'uk.co.alt236:bluetooth-le-library-android:1.0.0'
+    compile 'net.steamcrafted:materialiconlib:1.0.9'
+    compile 'com.heinrichreimersoftware:material-singleinputform:2.1.2'
+
 }

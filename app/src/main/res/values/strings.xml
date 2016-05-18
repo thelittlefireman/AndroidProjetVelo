@@ -72,4 +72,27 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="utiliser_hors_ligne">Utiliser hors ligne</string>
+    <string name="km_h">km/H</string>
+    <string name="assistance_automatique_en_fonction_du_d_nivel">Assistance automatique en fonction du dénivelé</string>
+    <string name="_0">0</string>
+    <string name="connecte">Connecter</string>
+    <string name="login">login</string>
+    <string name="login_error">login incorrect</string>
+    <string name="login_exemple">exemple : test12</string>
+    <string name="nom">Nom</string>
+    <string name="nom_error">Erreur nom</string>
+    <string name="nom_exemple">Exemple : jean</string>
+    <string name="prenom">Prénom</string>
+    <string name="error_prenom">Error prénom</string>
+    <string name="prenom_exemple">exemple : henri</string>
+    <string name="password">Password</string>
+    <string name="password_error">Empty or not 5-chars long</string>
+    <string name="password_details">Type your own password (5-chars long). Your personal information is protected with this password.</string>
+    <string name="email">E-mail</string>
+    <string name="email_error">Empty or not well-formed</string>
+    <string name="email_details">Your e-mail will be used as your login. Type the one you use most often.</string>
+    <string name="birthday">Birthday</string>
+    <string name="birthday_error">You must be at least 14.</string>
+    <string name="birthday_details">We will use your birthday only to calculate your age (older than 14).</string>
 </resources>

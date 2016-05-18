@@ -1,5 +1,6 @@
 package com.ppp.esir.projetvelo.activities;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -16,6 +17,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,6 +42,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.ppp.esir.projetvelo.R;
 import com.ppp.esir.projetvelo.requetes.Requete;
 import com.ppp.esir.projetvelo.utils.Datacontainer;
@@ -53,12 +58,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, GoogleApiClient.OnConnectionFailedListener {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final int RC_SIGN_IN = 12;
-
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -66,6 +67,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    /**
+     * Id to identity READ_CONTACTS permission request.
+     */
+    private final int REQUEST_LOCATION_PERMISSIONS = 15;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -77,6 +82,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private SignInButton signInButtonGoogle;
+    private Button offlineButton;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -88,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
+        mayRequestLocation();
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -112,7 +118,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         signInButtonGoogle = (SignInButton) findViewById(R.id.sign_in_button);
+        offlineButton = (Button) findViewById(R.id.offLineButton);
 
+        offlineButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(), BluetoothActivity.class));
+            }
+        });
         // Configure sign-in to request the user's ID, email address, and basic
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -156,6 +169,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
         }
+
+
     }
 
     private void signOut() {
@@ -173,6 +188,36 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    private boolean mayRequestLocation() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_LOCATION_PERMISSIONS);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+        return true;
     }
 
     private boolean mayRequestContacts() {
@@ -226,15 +271,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+            Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             //updateUI(true);
             //TODO INTEGRATION A BDD
-
+            String nom = acct.getDisplayName().split(" ")[0];
+            String prenom = acct.getDisplayName().split(" ")[1];
+            String email = acct.getEmail();
         } else {
             // Signed out, show unauthenticated UI.
             //updateUI(false);
         }
-        startActivity(new Intent(getBaseContext(), BluetoothActivity.class));
+        // startActivity(new Intent(getBaseContext(), BluetoothActivity.class));
     }
 
     /**
@@ -265,7 +313,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        // Check for a valid email address.
+        /*// Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
@@ -275,7 +323,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView = mEmailView;
             cancel = true;
         }
-
+*/
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -395,52 +443,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
+     * * 1 = ok
+     * 2= pas de compte
+     * 3= mp incorrect
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
 
-        private final String mEmail;
+        private final String mLogin;
         private final String mPassword;
 
         UserLoginTask(String email, String password) {
-            mEmail = email;
+            mLogin = email;
             mPassword = password;
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            if (Requete.getUserAuthentification(mEmail, mPassword)) {
-                return true;
-            }
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+        protected Integer doInBackground(Void... params) {
+            if (Requete.getUserAuthentification(mLogin, mPassword) == 1) {
+                Datacontainer.setUsername(mLogin);
+                Datacontainer.setPassword(mPassword);
+                return 1;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
+            return 2;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final Integer rst) {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-                finish();
-            } else {
+            if (rst == 1) {
+                startActivity(new Intent(getBaseContext(), BluetoothActivity.class));
+            } else if (rst == 2) {
+                startActivity(new Intent(getBaseContext(), InscriptionActivity.class));
+            } else if (rst == 3) {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
