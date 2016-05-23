@@ -73,7 +73,7 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="utiliser_hors_ligne">Utiliser hors ligne</string>
-    <string name="km_h">km/H</string>
+    <string name="km_h">km/h</string>
     <string name="assistance_automatique_en_fonction_du_d_nivel">Assistance automatique en fonction du dénivelé</string>
     <string name="_0">0</string>
     <string name="connecte">Connecter</string>
@@ -95,4 +95,8 @@
     <string name="birthday">Birthday</string>
     <string name="birthday_error">You must be at least 14.</string>
     <string name="birthday_details">We will use your birthday only to calculate your age (older than 14).</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBsGsjqN_w3CQcMlfUuOZEGrtvWOOXjUiY</string>
+    <string name="vitesse_moyenne">V. moy.</string>
+
 </resources>

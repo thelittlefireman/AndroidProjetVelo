@@ -162,6 +162,7 @@ public class BluetoothActivity extends AppCompatActivity {
         recyclerViewListBluetoothDevices.setLayoutManager(new LinearLayoutManager(this));
         final Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+        startScan();
     }
 
 

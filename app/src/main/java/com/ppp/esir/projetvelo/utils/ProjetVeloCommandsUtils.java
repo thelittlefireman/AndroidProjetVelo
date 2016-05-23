@@ -37,10 +37,20 @@ public class ProjetVeloCommandsUtils {
     }
     public static void setAssistance(int i) {
         if (i >= 0 && i <= 6) {
-            sendMessage("4" + String.valueOf(i));
+            sendMessage("4" + "," + String.valueOf(i));
         }
     }
 
+    public static void setPot(int i) {
+        int rst = 103 + i * 2;
+        if (i == 0) {
+
+            sendMessage("6" + "," + "000");
+        } else {
+            sendMessage("6" + "," + String.valueOf(rst));
+
+        }
+    }
     public static void getAssistance() {
         sendMessage("1");
     }

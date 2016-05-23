@@ -5,14 +5,21 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.ppp.esir.projetvelo.R;
+import com.ppp.esir.projetvelo.maps.ItineraireTask;
 import com.ppp.esir.projetvelo.services.BluetoothLeService;
 import com.ppp.esir.projetvelo.utils.BluetoothUtils;
 import com.ppp.esir.projetvelo.utils.Datacontainer;
@@ -29,6 +36,7 @@ public class ControleVeloActivity extends AppCompatActivity {
     private final int SPEED_ELEMENT = 2;
     private final int ASSIST_ELEMENT = 3;
     private TextView assistanceTextView, speedTextView;
+    private SeekBar seekBarSpeed;
     private MaterialIconView iconViewBattery;
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
@@ -41,14 +49,12 @@ public class ControleVeloActivity extends AppCompatActivity {
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 Log.i(this.getClass().getName(), "ACTION_GATT_SERVICES_DISCOVERED");
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                Log.i(this.getClass().getName(), "ACTION_DATA_AVAILABLE");
                 if (intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA_RAW) != null) {
                     String str = new String(intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA_RAW));
                     Log.i("bronCharacteristicRead", str);
                     Pattern pattern = Pattern.compile("<([0-9],[0-9]+(.[0-9]+)?)>");
                     Matcher matcher = pattern.matcher(str);
                     while (matcher.find()) {
-                        System.out.println("Trouvé !");
                         String allDATA = matcher.group().replace("<", "").replace(">", "");
                         String element = allDATA.split(",")[0];
                         String data = allDATA.split(",")[1];
@@ -80,7 +86,10 @@ public class ControleVeloActivity extends AppCompatActivity {
             }
         }
     };
+    private GoogleMap gMap;
+    private LocationManager locationManager;
     private MaterialIconView buttonMore, buttonLess;
+    private Button btnSearch;
     private BluetoothLeService mBluetoothLeService;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -99,20 +108,53 @@ public class ControleVeloActivity extends AppCompatActivity {
             mBluetoothLeService = null;
         }
     };
+    private EditText editDepart;
+    private EditText editArrivee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controle_velo);
         Datacontainer.setActivity(this);
+        ProjetVeloCommandsUtils.initProjetVeloCommandsUtils(this);
 
-        // BluetoothUtils.setmSmoothBluetoothListener(new SmoothBluetoothListenerControleVelo(this));
+        locationManager = (LocationManager) this
+                .getSystemService(LOCATION_SERVICE);
+        //On récupère les composants graphiques
+        gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);
         speedTextView = (TextView) findViewById(R.id.speed);
         iconViewBattery = (MaterialIconView) findViewById(R.id.iconBattery);
         buttonLess = (MaterialIconView) findViewById(R.id.buttonLess);
         buttonMore = (MaterialIconView) findViewById(R.id.buttonMore);
-        ProjetVeloCommandsUtils.initProjetVeloCommandsUtils(this);
+        btnSearch = (Button) findViewById(R.id.btnSearch);
+        editDepart = (EditText) findViewById(R.id.editDepart);
+        editArrivee = (EditText) findViewById(R.id.editArrivee);
+        seekBarSpeed = (SeekBar) findViewById(R.id.seekBarSpeed);
+
+        seekBarSpeed.setMax(25);
+        seekBarSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                ProjetVeloCommandsUtils.setPot(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ItineraireTask(ControleVeloActivity.this, gMap, editDepart.getText().toString(), editArrivee.getText().toString()).execute();
+            }
+        });
         buttonMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
