@@ -4,10 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/labelVitesseActuel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:text="Vitesse actuel : "
+        android:textSize="16sp"
+        android:textStyle="bold|italic" />
     <LinearLayout
         android:id="@+id/speedLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/labelVitesseActuel"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
@@ -43,12 +54,45 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:text="Arret d'urgence : "
+                android:textSize="16sp"
+                android:textStyle="bold|italic" />
+
+            <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/buttonEmergencyStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="#00ffffff"
+                android:padding="12dp"
+                app:materialIcon="pause_circle"
+                app:materialIconColor="@android:color/holo_red_dark"
+                app:materialIconSize="64dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:text="Assitance : "
+                android:textSize="16sp"
+                android:textStyle="bold|italic" />
+
+
             <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
+
 
                 <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/buttonLess"
@@ -82,6 +126,7 @@
                     app:materialIcon="plus_circle"
                     app:materialIconColor="@android:color/darker_gray"
                     app:materialIconSize="64dp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -89,7 +134,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Vitesse personnalisée : "
+                    android:textSize="16sp"
+                    android:textStyle="bold|italic" />
+
+                <android.support.v7.widget.AppCompatSeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp" />
+
+                <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00ffffff"
+                    android:padding="12dp"
+                    app:materialIcon="walk"
+                    app:materialIconColor="@android:color/darker_gray"
+                    app:materialIconSize="52dp" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -97,6 +166,5 @@
                     android:text="@string/assistance_automatique_en_fonction_du_d_nivel" />
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 </RelativeLayout>
