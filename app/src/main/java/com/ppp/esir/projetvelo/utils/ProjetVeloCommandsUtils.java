@@ -31,6 +31,10 @@ public class ProjetVeloCommandsUtils {
         getAssistance();
     }
 
+    public static void setAssistancePieton() {
+        sendMessage("5");
+        getAssistance();
+    }
     public static void setAssistance(int i) {
         if (i >= 0 && i <= 6) {
             sendMessage("4" + String.valueOf(i));

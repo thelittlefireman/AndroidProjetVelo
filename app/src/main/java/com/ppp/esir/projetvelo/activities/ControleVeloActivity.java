@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.ppp.esir.projetvelo.R;
@@ -81,7 +80,7 @@ public class ControleVeloActivity extends AppCompatActivity {
             }
         }
     };
-    private ImageButton buttonMore, buttonLess;
+    private MaterialIconView buttonMore, buttonLess;
     private BluetoothLeService mBluetoothLeService;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -111,8 +110,8 @@ public class ControleVeloActivity extends AppCompatActivity {
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);
         speedTextView = (TextView) findViewById(R.id.speed);
         iconViewBattery = (MaterialIconView) findViewById(R.id.iconBattery);
-        buttonLess = (ImageButton) findViewById(R.id.buttonLess);
-        buttonMore = (ImageButton) findViewById(R.id.buttonMore);
+        buttonLess = (MaterialIconView) findViewById(R.id.buttonLess);
+        buttonMore = (MaterialIconView) findViewById(R.id.buttonMore);
         ProjetVeloCommandsUtils.initProjetVeloCommandsUtils(this);
         buttonMore.setOnClickListener(new View.OnClickListener() {
             @Override
