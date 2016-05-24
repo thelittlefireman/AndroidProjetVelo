@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="refreshmenuitem-1.0">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.nicolasjafelle/refreshmenuitem/1.0/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.nicolasjafelle/refreshmenuitem/1.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.nicolasjafelle/refreshmenuitem/1.0/b83e321a531d2f1557fe92d4fb0305655294b280/refreshmenuitem-1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
