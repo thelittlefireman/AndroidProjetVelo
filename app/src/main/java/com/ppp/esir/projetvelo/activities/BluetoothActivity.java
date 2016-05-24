@@ -157,7 +157,6 @@ public class BluetoothActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bluetooth);
         Datacontainer.setActivity(this);
 
-
         refreshHelper = new RefreshMenuItemHelper();
         mDeviceStore = new BluetoothLeDeviceStore();
         mBluetoothUtils = new BluetoothUtils(this);
@@ -233,7 +232,11 @@ public class BluetoothActivity extends AppCompatActivity {
         }
     }
 
+    public void stopScan() {
+        mScanner.scanLeDevice(-1, false);
+    }
     private void startScan() {
+        refreshHelper.startLoading();
         final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
         final boolean mIsBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
         mDeviceStore.clear();
