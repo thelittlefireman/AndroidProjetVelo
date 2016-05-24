@@ -56,13 +56,14 @@ public class BluetoothActivity extends AppCompatActivity {
     };
     private RecyclerViewAdapterListBuetoothDevices mLeDeviceListAdapter;
     private BluetoothLeDeviceStore mDeviceStore;
-    private final ScanCallback mNormalScanCallback = new ScanCallback() {
+    private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            final BluetoothLeDevice deviceLe = new BluetoothLeDevice(result.getDevice(), result.getRssi(), result.getScanRecord().getBytes(), System.currentTimeMillis());
+        public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
+
+            final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
             mDeviceStore.addDevice(deviceLe);
             final EasyObjectCursor<BluetoothLeDevice> c = mDeviceStore.getDeviceCursor();
-            Log.i(this.getClass().getName(), "lnew device" + deviceLe.getName() + deviceLe.getAddress());
+            Log.i(this.getClass().getName(), "new device" + deviceLe.getName() + deviceLe.getAddress());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -70,6 +71,30 @@ public class BluetoothActivity extends AppCompatActivity {
                     mLeDeviceListAdapter.notifyDataSetChanged();
                 }
             });
+        }
+    };
+    private BluetoothLeDevice previousBluetooth = null;
+    private final ScanCallback mNormalScanCallback = new ScanCallback() {
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+            final BluetoothLeDevice deviceLe = new BluetoothLeDevice(result.getDevice(), result.getRssi(), result.getScanRecord().getBytes(), System.currentTimeMillis());
+            if (previousBluetooth == null) {
+                previousBluetooth = deviceLe;
+            }
+            if (deviceLe.getAddress() != previousBluetooth.getAddress()) {
+                previousBluetooth = deviceLe;
+
+                mDeviceStore.addDevice(deviceLe);
+                final EasyObjectCursor<BluetoothLeDevice> c = mDeviceStore.getDeviceCursor();
+                Log.i(this.getClass().getName(), "lnew device" + deviceLe.getName() + deviceLe.getAddress());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLeDeviceListAdapter.swapCursor(c);
+                        mLeDeviceListAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
         }
 
         /**
@@ -92,23 +117,6 @@ public class BluetoothActivity extends AppCompatActivity {
             Log.i(this.getClass().getName(), "failed" + errorCode);
         }
 
-    };
-    private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
-
-            final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
-            mDeviceStore.addDevice(deviceLe);
-            final EasyObjectCursor<BluetoothLeDevice> c = mDeviceStore.getDeviceCursor();
-            Log.i(this.getClass().getName(), "new device" + deviceLe.getName() + deviceLe.getAddress());
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mLeDeviceListAdapter.swapCursor(c);
-                    mLeDeviceListAdapter.notifyDataSetChanged();
-                }
-            });
-        }
     };
     private BluetoothLeService mBluetoothLeService;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -166,7 +174,6 @@ public class BluetoothActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -213,7 +220,6 @@ public class BluetoothActivity extends AppCompatActivity {
         }
         invalidateOptionsMenu();
     }
-
 
 
     @Override
