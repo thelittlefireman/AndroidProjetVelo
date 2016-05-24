@@ -58,6 +58,7 @@ public class RecyclerViewAdapterListBuetoothDevices extends CursorRecyclerAdapte
             @Override
             public void onClick(View v) {
                 BluetoothLeDevice device = getCursor().getItem(cursor.getPosition());
+                bluetoothActivity.stopScan();
                 bluetoothActivity.getmBluetoothLeService().connect(device.getAddress());
             }
         });
