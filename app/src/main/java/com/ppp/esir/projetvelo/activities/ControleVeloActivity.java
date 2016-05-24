@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import com.ppp.esir.projetvelo.services.BluetoothLeService;
 import com.ppp.esir.projetvelo.utils.BluetoothUtils;
 import com.ppp.esir.projetvelo.utils.Datacontainer;
 import com.ppp.esir.projetvelo.utils.ProjetVeloCommandsUtils;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 import net.steamcrafted.materialiconlib.MaterialIconView;
@@ -88,7 +90,8 @@ public class ControleVeloActivity extends AppCompatActivity {
     };
     private GoogleMap gMap;
     private LocationManager locationManager;
-    private MaterialIconView buttonMore, buttonLess;
+    private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop;
+    private SlidingUpPanelLayout sliding_layout;
     private Button btnSearch;
     private BluetoothLeService mBluetoothLeService;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -131,6 +134,28 @@ public class ControleVeloActivity extends AppCompatActivity {
         editDepart = (EditText) findViewById(R.id.editDepart);
         editArrivee = (EditText) findViewById(R.id.editArrivee);
         seekBarSpeed = (SeekBar) findViewById(R.id.seekBarSpeed);
+        pedestrianSpeed = (MaterialIconView) findViewById(R.id.pedestrianSpeed);
+        buttonEmergencyStop = (MaterialIconView) findViewById(R.id.buttonEmergencyStop);
+        sliding_layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        sliding_layout.setFadeOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        });
+        buttonEmergencyStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProjetVeloCommandsUtils.stopAll();
+                seekBarSpeed.setProgress(0);
+            }
+        });
+        pedestrianSpeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProjetVeloCommandsUtils.setAssistancePieton();
+            }
+        });
 
         seekBarSpeed.setMax(25);
         seekBarSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -197,5 +222,18 @@ public class ControleVeloActivity extends AppCompatActivity {
 
     public BluetoothLeService getmBluetoothLeService() {
         return mBluetoothLeService;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                seekBarSpeed.setProgress(seekBarSpeed.getProgress() + 5);
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                seekBarSpeed.setProgress(seekBarSpeed.getProgress() - 5);
+                return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

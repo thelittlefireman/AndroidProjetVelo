@@ -15,7 +15,9 @@ public class ProjetVeloCommandsUtils {
     }
 
     private static void sendMessage(String message) {
-        activity.getmBluetoothLeService().send(begin + message + end);
+        if (message != null & !message.equals("")) {
+            activity.getmBluetoothLeService().send(begin + message + end);
+        }
     }
 
     public static void bonjour() {
@@ -53,5 +55,10 @@ public class ProjetVeloCommandsUtils {
     }
     public static void getAssistance() {
         sendMessage("1");
+    }
+
+    public static void stopAll() {
+        setAssistance(0);
+        setPot(0);
     }
 }

@@ -86,7 +86,7 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
     protected Boolean doInBackground(Void... params) {
         try {
             //Construction de l'url à appeler
-            final StringBuilder url = new StringBuilder("http://maps.googleapis.com/maps/api/directions/xml?sensor=false&language=fr");
+            final StringBuilder url = new StringBuilder("http://maps.googleapis.com/maps/api/directions/xml?sensor=false&alternatives=true&language=fr");
             url.append("&origin=");
             url.append(editDepart.replace(' ', '+'));
             url.append("&destination=");
