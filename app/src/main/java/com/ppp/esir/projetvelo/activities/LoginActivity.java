@@ -95,9 +95,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Datacontainer.setActivity(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView.setText(Datacontainer.getUsername());
         populateAutoComplete();
         mayRequestLocation();
         mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView.setText(Datacontainer.getPassword());
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -477,6 +479,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Datacontainer.setUsername(mLogin);
                 Datacontainer.setPassword(mPassword);
                 Datacontainer.setIsConnected(true);
+                Datacontainer.setActualUser(Requete.getUserInformation());
                 return 1;
             }
 

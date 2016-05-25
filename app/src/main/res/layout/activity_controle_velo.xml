@@ -8,30 +8,29 @@
 
     <include layout="@layout/toolbar" />
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/sliding_layout"
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutMap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:gravity="bottom"
-        sothree:umanoPanelHeight="150dp"
-        sothree:umanoShadowHeight="4dp">
+        android:layout_below="@+id/toolbar">
 
-        <RelativeLayout
+        <fragment
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/includeVeloPanel"
+            android:layout_alignParentTop="true" />
 
-            <fragment
-                android:id="@+id/map"
-                class="com.google.android.gms.maps.MapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        <include
+            android:id="@+id/includeVeloPanel"
+            layout="@layout/velo_panel_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-
-        <include layout="@layout/slidinguppanel_content" />
-
-
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 </RelativeLayout>

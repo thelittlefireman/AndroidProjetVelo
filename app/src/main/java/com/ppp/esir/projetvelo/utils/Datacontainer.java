@@ -3,6 +3,8 @@ package com.ppp.esir.projetvelo.utils;
 import android.app.Activity;
 import android.content.Context;
 
+import com.ppp.esir.projetvelo.models.User;
+
 /**
  * Created by thoma on 02/05/2016.
  */
@@ -10,7 +12,16 @@ public class Datacontainer {
     private static Activity activity;
     private static Context context;
     private static String username, password;
+    private static User actualUser = null;
     private static boolean isConnected = false;
+
+    public static User getActualUser() {
+        return actualUser;
+    }
+
+    public static void setActualUser(User actualUser) {
+        Datacontainer.actualUser = actualUser;
+    }
 
     public static boolean isConnected() {
         return isConnected;

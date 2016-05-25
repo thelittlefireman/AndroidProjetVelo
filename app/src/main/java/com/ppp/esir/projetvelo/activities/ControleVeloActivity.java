@@ -14,8 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +36,6 @@ import com.ppp.esir.projetvelo.utils.BluetoothUtils;
 import com.ppp.esir.projetvelo.utils.Datacontainer;
 import com.ppp.esir.projetvelo.utils.ProjetVeloCommandsUtils;
 import com.ppp.esir.projetvelo.views.IDrawerItemSearchItinerary;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 import net.steamcrafted.materialiconlib.MaterialIconView;
@@ -113,28 +110,9 @@ public class ControleVeloActivity extends AppCompatActivity {
             }
         }
     };
-
-    private String getErreur(String data) {
-        switch (data) {
-            case "1":
-                return "Throttle Signal Abnormality";
-            case "3":
-                return "Motor Hall Signal Abnormality";
-            case "4":
-                return "Torque Sensor Signal Abnormality";
-            case "5":
-                return "Speed Sensor Signal Abnormality (Suitable for torque system)";
-            case "6":
-                return "Motor or Controller Short Circuit Abnormality";
-        }
-        return "";
-    }
-
     private GoogleMap gMap;
     private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop;
     private TextView distanceParcourue;
-    private SlidingUpPanelLayout sliding_layout;
-    private Button btnSearch;
     private BluetoothLeService mBluetoothLeService;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -153,10 +131,24 @@ public class ControleVeloActivity extends AppCompatActivity {
             mBluetoothLeService = null;
         }
     };
-    private Button myLocation;
-    private EditText editDepart;
-    private EditText editArrivee;
     private Drawer drawer;
+    private IDrawerItemSearchItinerary iDrawerItemSearchItinerary;
+
+    private String getErreur(String data) {
+        switch (data) {
+            case "1":
+                return "Throttle Signal Abnormality";
+            case "3":
+                return "Motor Hall Signal Abnormality";
+            case "4":
+                return "Torque Sensor Signal Abnormality";
+            case "5":
+                return "Speed Sensor Signal Abnormality (Suitable for torque system)";
+            case "6":
+                return "Motor or Controller Short Circuit Abnormality";
+        }
+        return "";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,13 +170,25 @@ public class ControleVeloActivity extends AppCompatActivity {
 
         DrawerBuilder drawerBuilder = new DrawerBuilder();
         Drawer drawer = null;
+        iDrawerItemSearchItinerary = new IDrawerItemSearchItinerary(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Itineraire
+                ItineraireTask myTask = new ItineraireTask(ControleVeloActivity.this, gMap, iDrawerItemSearchItinerary.getDepart(), iDrawerItemSearchItinerary.getArrivee());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                    myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                else
+                    myTask.execute();
+
+            }
+        });
         //Add DRAWER
         if (Datacontainer.isConnected()) {
             // Create the AccountHeader
             AccountHeader headerResult = new AccountHeaderBuilder()
                     .withActivity(this)
                     .addProfiles(
-                            new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.common_google_signin_btn_icon_dark))
+                            new ProfileDrawerItem().withName(Datacontainer.getActualUser().getNomPrenom()).withEmail(Datacontainer.getActualUser().getmEmail()).withIcon(getResources().getDrawable(R.mipmap.ic_launcher))
                     )
                     .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                         @Override
@@ -196,31 +200,18 @@ public class ControleVeloActivity extends AppCompatActivity {
 
             //Now create your drawer and pass the AccountHeader.Result
             drawerBuilder.withAccountHeader(headerResult);
-        } else {
         }
-
-        drawer = drawerBuilder.withActivity(this).addDrawerItems(new IDrawerItemSearchItinerary()).build();
-
+        drawer = drawerBuilder.withActivity(this).withToolbar(toolbar).withActionBarDrawerToggle(true).addDrawerItems(iDrawerItemSearchItinerary).build();
         //On récupère les composants graphiques
         gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);
         distanceParcourue = (TextView) findViewById(R.id.distanceParcourue);
         buttonLess = (MaterialIconView) findViewById(R.id.buttonLess);
         buttonMore = (MaterialIconView) findViewById(R.id.buttonMore);
-        btnSearch = (Button) findViewById(R.id.btnSearch);
-        myLocation = (Button) findViewById(R.id.myLocation);
-        editDepart = (EditText) findViewById(R.id.editDepart);
-        editArrivee = (EditText) findViewById(R.id.editArrivee);
         seekBarSpeed = (SeekBar) findViewById(R.id.seekBarSpeed);
         pedestrianSpeed = (MaterialIconView) findViewById(R.id.pedestrianSpeed);
         buttonEmergencyStop = (MaterialIconView) findViewById(R.id.buttonEmergencyStop);
-        sliding_layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-        sliding_layout.setFadeOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            }
-        });
+
         buttonEmergencyStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -250,16 +241,6 @@ public class ControleVeloActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
-            }
-        });
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ItineraireTask myTask = new ItineraireTask(ControleVeloActivity.this, gMap, editDepart.getText().toString(), editArrivee.getText().toString());
-                if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.HONEYCOMB)
-                    myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                else
-                    myTask.execute();
             }
         });
         buttonMore.setOnClickListener(new View.OnClickListener() {
@@ -294,12 +275,7 @@ public class ControleVeloActivity extends AppCompatActivity {
         gMap.setMyLocationEnabled(true);
         gMap.setOnMyLocationChangeListener(new MyLocationChangeListener(distanceParcourue, gMap));
 
-        myLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editDepart.setText("Ma position");
-            }
-        });
+
         final Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
     }

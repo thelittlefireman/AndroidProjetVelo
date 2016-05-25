@@ -46,15 +46,25 @@ public class Requete {
     }
 
     public static User getUserInformation() {
+        /*
+        * {"Id_User":"1","Login":"ali","Nom":"Mohamed Affizou","Prenom":"Ali ","Age":"23","dateInscription":"0000-00-00 00:00:00","adresse":"39 AVENUE DU PROFESSEUR CHARLES FOULON RES UNIV BEAULIEU","mail":"alimohamedaffizou@mail.com"}]
+        * */
         HashMap<String, String> dataPost = new HashMap<>();
         dataPost.put("login", Datacontainer.getUsername());
-        dataPost.put("password", Datacontainer.getPassword());
+        dataPost.put("mp", Datacontainer.getPassword());
         String rst = RequeteConfigurator.sendRequetePost(RequeteConfigurator.ApiRequete.GET_INFORMATIONS, dataPost);
         User user = new User();
+        if (DEBUG) {
+            Log.i(Requete.class.getName(), "réponse:" + rst);
+        }
         try {
             JSONObject jsonObject = new JSONObject(rst);
-            jsonObject.getString("");
-            //TODO
+            user.setmNom(jsonObject.getString("Nom"));
+            user.setmLogin(jsonObject.getString("Login"));
+            user.setmPrenom(jsonObject.getString("Prenom"));
+            user.setmAge(jsonObject.getString("Age"));
+            user.setmAdresse(jsonObject.getString("adresse"));
+            user.setmEmail(jsonObject.getString("mail"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -86,7 +96,7 @@ public class Requete {
         HashMap<String, String> dataPost = new HashMap<>();
         dataPost.put("requete", "authentification");
         dataPost.put("login", Datacontainer.getUsername());
-        dataPost.put("password", Datacontainer.getPassword());
+        dataPost.put("mp", Datacontainer.getPassword());
         dataPost.put("depart", deplacement.getDepart());
         dataPost.put("arrivee", deplacement.getArrivee());
         dataPost.put("vitesse", deplacement.getVitesse());//vitesse moyenne
