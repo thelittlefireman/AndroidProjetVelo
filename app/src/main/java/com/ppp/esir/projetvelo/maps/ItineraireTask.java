@@ -135,6 +135,7 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
 
             return true;
         } catch (final Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -203,7 +204,8 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
             markerB.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
             //On met à jour la carte
-            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lstLatLng.get(0), 10));
+            gMap.clear();
+            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(this.myLatitude, this.myLongitude), 18));
             gMap.addMarker(markerA);
             gMap.addPolyline(polylines);
             gMap.addMarker(markerB);

@@ -5,6 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -253,7 +255,11 @@ public class ControleVeloActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ItineraireTask(ControleVeloActivity.this, gMap, editDepart.getText().toString(), editArrivee.getText().toString()).execute();
+                ItineraireTask myTask = new ItineraireTask(ControleVeloActivity.this, gMap, editDepart.getText().toString(), editArrivee.getText().toString());
+                if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.HONEYCOMB)
+                    myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                else
+                    myTask.execute();
             }
         });
         buttonMore.setOnClickListener(new View.OnClickListener() {
@@ -273,7 +279,7 @@ public class ControleVeloActivity extends AppCompatActivity {
             @Override
             public boolean onMyLocationButtonClick() {
                 ControleVeloActivity.mapLock = true;
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gMap.getMyLocation().getLatitude(), gMap.getMyLocation().getLongitude()), gMap.getCameraPosition().zoom));
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gMap.getMyLocation().getLatitude(), gMap.getMyLocation().getLongitude()), 18));
                 gMap.getUiSettings().setMyLocationButtonEnabled(false);
                 return true;
             }
