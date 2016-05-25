@@ -10,6 +10,15 @@ public class Datacontainer {
     private static Activity activity;
     private static Context context;
     private static String username, password;
+    private static boolean isConnected = false;
+
+    public static boolean isConnected() {
+        return isConnected;
+    }
+
+    public static void setIsConnected(boolean isConnected) {
+        Datacontainer.isConnected = isConnected;
+    }
 
     public static Activity getActivity() {
         return activity;

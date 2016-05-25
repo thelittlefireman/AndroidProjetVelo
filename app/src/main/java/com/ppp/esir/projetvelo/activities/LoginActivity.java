@@ -476,6 +476,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (Requete.getUserAuthentification(mLogin, mPassword) == 1) {
                 Datacontainer.setUsername(mLogin);
                 Datacontainer.setPassword(mPassword);
+                Datacontainer.setIsConnected(true);
                 return 1;
             }
 
