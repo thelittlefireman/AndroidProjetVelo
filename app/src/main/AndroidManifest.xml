@@ -46,7 +46,9 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".activities.BluetoothActivity" />
-        <activity android:name=".activities.ControleVeloActivity" />
+        <activity
+            android:name=".activities.ControleVeloActivity"
+            android:theme="@style/AppThemeNoToolbar" />
 
         <service
             android:name=".services.BluetoothLeService"
