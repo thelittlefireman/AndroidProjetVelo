@@ -43,7 +43,6 @@ public class BluetoothActivity extends AppCompatActivity {
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 startActivity(new Intent(context, ControleVeloActivity.class));
                 mScanner.scanLeDevice(-1, false);
-                finish();
                 Log.i(this.getClass().getName(), "bluetooth connected");
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 Log.i(this.getClass().getName(), "ACTION_GATT_DISCONNECTED");

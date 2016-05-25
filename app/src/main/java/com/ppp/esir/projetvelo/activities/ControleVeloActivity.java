@@ -26,7 +26,10 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.ppp.esir.projetvelo.R;
 import com.ppp.esir.projetvelo.listeners.MyLocationChangeListener;
@@ -164,8 +167,9 @@ public class ControleVeloActivity extends AppCompatActivity {
         speedTextView = ((TextView) toolbar.findViewById(R.id.speed));
         iconViewBattery = (MaterialIconView) toolbar.findViewById(iconBattery);
 
-
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
 
         DrawerBuilder drawerBuilder = new DrawerBuilder();
@@ -187,6 +191,7 @@ public class ControleVeloActivity extends AppCompatActivity {
             // Create the AccountHeader
             AccountHeader headerResult = new AccountHeaderBuilder()
                     .withActivity(this)
+                    .withTextColorRes(R.color.colorPrimary)
                     .addProfiles(
                             new ProfileDrawerItem().withName(Datacontainer.getActualUser().getNomPrenom()).withEmail(Datacontainer.getActualUser().getmEmail()).withIcon(getResources().getDrawable(R.mipmap.ic_launcher))
                     )
@@ -201,7 +206,14 @@ public class ControleVeloActivity extends AppCompatActivity {
             //Now create your drawer and pass the AccountHeader.Result
             drawerBuilder.withAccountHeader(headerResult);
         }
-        drawer = drawerBuilder.withActivity(this).withToolbar(toolbar).withActionBarDrawerToggle(true).addDrawerItems(iDrawerItemSearchItinerary).build();
+        drawer = drawerBuilder.withActivity(this).withToolbar(toolbar).addDrawerItems(iDrawerItemSearchItinerary, new DividerDrawerItem(), new PrimaryDrawerItem().withName("Déconnexion").withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                getmBluetoothLeService().disconnect();
+                finish();
+                return true;
+            }
+        })).build();
         //On récupère les composants graphiques
         gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);

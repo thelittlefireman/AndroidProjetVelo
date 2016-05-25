@@ -1,19 +1,19 @@
 package com.ppp.esir.projetvelo.views;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.mikepenz.fastadapter.utils.ViewHolderFactory;
-import com.mikepenz.materialdrawer.model.BasePrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.BaseViewHolder;
+import com.mikepenz.materialdrawer.model.BaseDrawerItem;
 import com.ppp.esir.projetvelo.R;
 
 /**
  * Created by thoma on 25/05/2016.
  */
-public class IDrawerItemSearchItinerary extends BasePrimaryDrawerItem<IDrawerItemSearchItinerary, IDrawerItemSearchItinerary.ViewHolderEditText> {
+public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearchItinerary, IDrawerItemSearchItinerary.ViewHolderEditText> {
     private View.OnClickListener onClickListener;
     private ViewHolderEditText viewHolderEditText;
 
@@ -35,7 +35,7 @@ public class IDrawerItemSearchItinerary extends BasePrimaryDrawerItem<IDrawerIte
 
     @Override
     public int getType() {
-        return com.mikepenz.materialdrawer.R.id.material_drawer_item_primary;
+        return 0;
     }
 
     @Override
@@ -47,8 +47,6 @@ public class IDrawerItemSearchItinerary extends BasePrimaryDrawerItem<IDrawerIte
     public void bindView(ViewHolderEditText viewHolder) {
         Context ctx = viewHolder.itemView.getContext();
         //bind the basic view parts
-        // bindViewHelper(viewHolder);
-        this.viewHolderEditText = viewHolder;
         viewHolder.buttonSearch.setOnClickListener(this.onClickListener);
         viewHolder.myLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +54,9 @@ public class IDrawerItemSearchItinerary extends BasePrimaryDrawerItem<IDrawerIte
                 viewHolderEditText.getEditTextDepart().setText("Ma position");
             }
         });
+        this.viewHolderEditText = viewHolder;
         //call the onPostBindView method to trigger post bind view actions (like the listener to modify the item if required)
-        //  onPostBindView(this, viewHolder.itemView);
+        onPostBindView(this, viewHolder.itemView);
 
     }
 
@@ -67,16 +66,16 @@ public class IDrawerItemSearchItinerary extends BasePrimaryDrawerItem<IDrawerIte
         }
     }
 
-    public static class ViewHolderEditText extends BaseViewHolder {
+    public static class ViewHolderEditText extends RecyclerView.ViewHolder {
         private EditText editTextDepart, editTextArrivee;
         private Button buttonSearch, myLocation;
 
         public ViewHolderEditText(View itemView) {
             super(itemView);
-            this.editTextDepart = (EditText) view.findViewById(R.id.editDepart);
-            this.editTextArrivee = (EditText) view.findViewById(R.id.editArrivee);
-            this.buttonSearch = (Button) view.findViewById(R.id.btnSearch);
-            this.myLocation = (Button) view.findViewById(R.id.myLocation);
+            this.editTextDepart = (EditText) itemView.findViewById(R.id.editDepart);
+            this.editTextArrivee = (EditText) itemView.findViewById(R.id.editArrivee);
+            this.buttonSearch = (Button) itemView.findViewById(R.id.btnSearch);
+            this.myLocation = (Button) itemView.findViewById(R.id.myLocation);
         }
 
         public EditText getEditTextDepart() {
