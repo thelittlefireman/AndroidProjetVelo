@@ -158,8 +158,6 @@ public class ControleVeloActivity extends AppCompatActivity {
         }
 
 
-        locationManager = (LocationManager) this
-                .getSystemService(LOCATION_SERVICE);
         //On récupère les composants graphiques
         gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);
