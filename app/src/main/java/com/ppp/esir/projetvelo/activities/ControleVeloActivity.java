@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -37,6 +38,8 @@ public class ControleVeloActivity extends AppCompatActivity {
     private final int BATTERY_ELEMENT = 1;
     private final int SPEED_ELEMENT = 2;
     private final int ASSIST_ELEMENT = 3;
+    private final int ERROR = 4;
+
     private TextView assistanceTextView, speedTextView;
     private SeekBar seekBarSpeed;
     private MaterialIconView iconViewBattery;
@@ -79,7 +82,15 @@ public class ControleVeloActivity extends AppCompatActivity {
                                 speedTextView.setText(data);
                                 break;
                             case ASSIST_ELEMENT:
+                                if (data.equals("0"))
+                                    seekBarSpeed.setProgress(0);
                                 assistanceTextView.setText(data);
+                                break;
+                            case ERROR:
+                                if (!data.equals("0")) {
+                                    System.out.println("ERROR : " + data);
+                                    Toast.makeText(context, "Erreur du controller : " + data, Toast.LENGTH_SHORT).show();
+                                }
                                 break;
 
                         }
