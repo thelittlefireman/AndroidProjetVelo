@@ -18,14 +18,24 @@
         android:background="@color/colorPrimary"
         android:gravity="center">
 
+        <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/buttonDrawer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ffffff"
+            android:padding="5dp"
+            app:materialIcon="hand_pointing_right"
+            app:materialIconColor="@android:color/darker_gray"
+            app:materialIconSize="32dp" />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:textColor="@android:color/white"
-            android:textAppearance="?attr/actionBarTabTextStyle" />
+            android:textAppearance="?attr/actionBarTabTextStyle"
+            android:textColor="@android:color/white" />
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -114,7 +114,7 @@ public class ControleVeloActivity extends AppCompatActivity {
         }
     };
     private GoogleMap gMap;
-    private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop;
+    private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop, buttonDrawer;
     private TextView distanceParcourue;
     private BluetoothLeService mBluetoothLeService;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -166,14 +166,18 @@ public class ControleVeloActivity extends AppCompatActivity {
         ((TextView) toolbar.findViewById(R.id.title)).setText("Projet Vélo");
         speedTextView = ((TextView) toolbar.findViewById(R.id.speed));
         iconViewBattery = (MaterialIconView) toolbar.findViewById(iconBattery);
-
+        buttonDrawer = (MaterialIconView) toolbar.findViewById(R.id.buttonDrawer);
+        buttonDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer();
+            }
+        });
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
 
         DrawerBuilder drawerBuilder = new DrawerBuilder();
-        Drawer drawer = null;
+
         iDrawerItemSearchItinerary = new IDrawerItemSearchItinerary(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,7 +210,7 @@ public class ControleVeloActivity extends AppCompatActivity {
             //Now create your drawer and pass the AccountHeader.Result
             drawerBuilder.withAccountHeader(headerResult);
         }
-        drawer = drawerBuilder.withActivity(this).withToolbar(toolbar).addDrawerItems(iDrawerItemSearchItinerary, new DividerDrawerItem(), new PrimaryDrawerItem().withName("Déconnexion").withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+        drawer = drawerBuilder.withActivity(this).addDrawerItems(iDrawerItemSearchItinerary, new DividerDrawerItem(), new PrimaryDrawerItem().withName("Déconnexion").withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 getmBluetoothLeService().disconnect();
