@@ -2,6 +2,7 @@ package com.ppp.esir.projetvelo.views;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.mikepenz.fastadapter.utils.ViewHolderFactory;
@@ -48,11 +49,14 @@ public class IDrawerItemSearchItinerary extends BasePrimaryDrawerItem<IDrawerIte
     }
 
     public static class ViewHolderEditText extends BaseViewHolder {
-        private EditText editText;
+        private EditText editTextDepart, editTextArrivee;
+        private Button buttonSearch;
 
         public ViewHolderEditText(View itemView) {
             super(itemView);
-            this.editText = (EditText) view.findViewById(R.id.editText);
+            this.editTextDepart = (EditText) view.findViewById(R.id.editDepart);
+            this.editTextArrivee = (EditText) view.findViewById(R.id.editArrivee);
+            this.buttonSearch = (Button) view.findViewById(R.id.btnSearch);
         }
     }
 }
