@@ -5,7 +5,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +16,12 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.ppp.esir.projetvelo.R;
+import com.ppp.esir.projetvelo.listeners.MyLocationChangeListener;
 import com.ppp.esir.projetvelo.maps.ItineraireTask;
 import com.ppp.esir.projetvelo.services.BluetoothLeService;
 import com.ppp.esir.projetvelo.utils.BluetoothUtils;
@@ -89,8 +91,9 @@ public class ControleVeloActivity extends AppCompatActivity {
         }
     };
     private GoogleMap gMap;
-    private LocationManager locationManager;
+    public static boolean mapLock = false;
     private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop;
+    private TextView distanceParcourue;
     private SlidingUpPanelLayout sliding_layout;
     private Button btnSearch;
     private BluetoothLeService mBluetoothLeService;
@@ -111,6 +114,7 @@ public class ControleVeloActivity extends AppCompatActivity {
             mBluetoothLeService = null;
         }
     };
+    private Button myLocation;
     private EditText editDepart;
     private EditText editArrivee;
 
@@ -121,16 +125,16 @@ public class ControleVeloActivity extends AppCompatActivity {
         Datacontainer.setActivity(this);
         ProjetVeloCommandsUtils.initProjetVeloCommandsUtils(this);
 
-        locationManager = (LocationManager) this
-                .getSystemService(LOCATION_SERVICE);
         //On récupère les composants graphiques
         gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);
         speedTextView = (TextView) findViewById(R.id.speed);
         iconViewBattery = (MaterialIconView) findViewById(R.id.iconBattery);
+        distanceParcourue = (TextView) findViewById(R.id.distanceParcourue);
         buttonLess = (MaterialIconView) findViewById(R.id.buttonLess);
         buttonMore = (MaterialIconView) findViewById(R.id.buttonMore);
         btnSearch = (Button) findViewById(R.id.btnSearch);
+        myLocation = (Button) findViewById(R.id.myLocation);
         editDepart = (EditText) findViewById(R.id.editDepart);
         editArrivee = (EditText) findViewById(R.id.editArrivee);
         seekBarSpeed = (SeekBar) findViewById(R.id.seekBarSpeed);
@@ -193,6 +197,31 @@ public class ControleVeloActivity extends AppCompatActivity {
             }
         });
 
+        gMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                ControleVeloActivity.mapLock = true;
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gMap.getMyLocation().getLatitude(), gMap.getMyLocation().getLongitude()), gMap.getCameraPosition().zoom));
+                gMap.getUiSettings().setMyLocationButtonEnabled(false);
+                return true;
+            }
+        });
+        gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                ControleVeloActivity.mapLock = false;
+                gMap.getUiSettings().setMyLocationButtonEnabled(true);
+            }
+        });
+        gMap.setMyLocationEnabled(true);
+        gMap.setOnMyLocationChangeListener(new MyLocationChangeListener(distanceParcourue, gMap));
+
+        myLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editDepart.setText("Ma position");
+            }
+        });
         final Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
     }

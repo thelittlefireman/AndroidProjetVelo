@@ -50,6 +50,8 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
      *******************************************************/
     private Context context;
     private GoogleMap gMap;
+    private double myLatitude;
+    private double myLongitude;
     private String editDepart;
     private String editArrivee;
 
@@ -69,6 +71,8 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
         this.gMap = gMap;
         this.editDepart = editDepart;
         this.editArrivee = editArrivee;
+        this.myLatitude = gMap.getMyLocation().getLatitude();
+        this.myLongitude = gMap.getMyLocation().getLongitude();
     }
 
     /**
@@ -88,7 +92,10 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
             //Construction de l'url à appeler
             final StringBuilder url = new StringBuilder("http://maps.googleapis.com/maps/api/directions/xml?sensor=false&alternatives=true&language=fr&mode=bicycling");
             url.append("&origin=");
-            url.append(editDepart.replace(' ', '+'));
+            if(editDepart.equals("Ma position"))
+                url.append(this.myLatitude + "," + this.myLongitude);
+            else
+                url.append(editDepart.replace(' ', '+'));
             url.append("&destination=");
             url.append(editArrivee.replace(' ', '+'));
 

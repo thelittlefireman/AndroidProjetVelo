@@ -27,7 +27,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:padding="12dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -49,20 +50,20 @@
                     android:textColor="@android:color/holo_red_dark"
                     android:textSize="30sp"
                     android:textStyle="bold" />
-
+            </LinearLayout>
 
                 <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/iconBattery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:background="#00ffffff"
                     android:padding="12dp"
                     app:materialIcon="battery_alert"
                     app:materialIconColor="@android:color/holo_red_dark"
                     app:materialIconSize="34dp" />
-            </LinearLayout>
+
         </RelativeLayout>
 
 

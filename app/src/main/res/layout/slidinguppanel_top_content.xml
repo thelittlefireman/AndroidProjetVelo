@@ -6,10 +6,17 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_alignParentRight="true"
-        android:gravity="right"
         android:orientation="horizontal">
 
+        <TextView
+            android:id="@+id/distanceParcourue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:padding="10dp"/>
 
         <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/buttonLess"
