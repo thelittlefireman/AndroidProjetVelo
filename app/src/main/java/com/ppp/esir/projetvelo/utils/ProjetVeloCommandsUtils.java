@@ -23,6 +23,7 @@ public class ProjetVeloCommandsUtils {
     public static void bonjour() {
         sendMessage("bonjour");
     }
+
     public static void upAssistance() {
         sendMessage("2");
         getAssistance();
@@ -37,10 +38,15 @@ public class ProjetVeloCommandsUtils {
         sendMessage("5");
         getAssistance();
     }
+
     public static void setAssistance(int i) {
         if (i >= 0 && i <= 6) {
             sendMessage("4" + "," + String.valueOf(i));
         }
+    }
+
+    public static void stopAssistance() {
+        sendMessage("0");
     }
 
     public static void setPot(int i) {
@@ -53,12 +59,13 @@ public class ProjetVeloCommandsUtils {
 
         }
     }
+
     public static void getAssistance() {
         sendMessage("1");
     }
 
     public static void stopAll() {
-        setAssistance(0);
+        stopAssistance();
         setPot(0);
     }
 }
