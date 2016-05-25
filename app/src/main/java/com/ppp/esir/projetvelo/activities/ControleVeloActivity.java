@@ -44,11 +44,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ControleVeloActivity extends AppCompatActivity {
+    public static boolean mapLock = false;
     private final int BATTERY_ELEMENT = 1;
     private final int SPEED_ELEMENT = 2;
     private final int ASSIST_ELEMENT = 3;
     private final int ERROR = 4;
-
     private TextView assistanceTextView, speedTextView;
     private SeekBar seekBarSpeed;
     private MaterialIconView iconViewBattery;
@@ -109,7 +109,6 @@ public class ControleVeloActivity extends AppCompatActivity {
         }
     };
     private GoogleMap gMap;
-    public static boolean mapLock = false;
     private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop;
     private TextView distanceParcourue;
     private SlidingUpPanelLayout sliding_layout;
@@ -144,7 +143,8 @@ public class ControleVeloActivity extends AppCompatActivity {
         Datacontainer.setActivity(this);
         ProjetVeloCommandsUtils.initProjetVeloCommandsUtils(this);
 
-
+        DrawerBuilder drawerBuilder = new DrawerBuilder();
+        Drawer drawer = null;
         //Add DRAWER
         if (Datacontainer.isConnected()) {
             // Create the AccountHeader
@@ -162,12 +162,11 @@ public class ControleVeloActivity extends AppCompatActivity {
                     .build();
 
             //Now create your drawer and pass the AccountHeader.Result
-            new DrawerBuilder().withAccountHeader(headerResult).withActivity(this).build();
+            drawerBuilder.withAccountHeader(headerResult);
         } else {
-            new DrawerBuilder().withActivity(this).addDrawerItems(new IDrawerItemSearchItinerary()).addDrawerItems(new IDrawerItemSearchItinerary()).build();
-
         }
 
+        drawer = drawerBuilder.withActivity(this).addDrawerItems(new IDrawerItemSearchItinerary()).build();
 
         //On récupère les composants graphiques
         gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();

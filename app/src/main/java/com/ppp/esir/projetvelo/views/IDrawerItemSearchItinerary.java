@@ -14,7 +14,6 @@ import com.ppp.esir.projetvelo.R;
  */
 public class IDrawerItemSearchItinerary extends BasePrimaryDrawerItem<IDrawerItemSearchItinerary, IDrawerItemSearchItinerary.ViewHolderEditText> {
 
-
     @Override
     public ViewHolderFactory<IDrawerItemSearchItinerary.ViewHolderEditText> getFactory() {
         return new ItemFactory();
