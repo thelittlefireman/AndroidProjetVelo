@@ -20,12 +20,19 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.ppp.esir.projetvelo.R;
 import com.ppp.esir.projetvelo.maps.ItineraireTask;
 import com.ppp.esir.projetvelo.services.BluetoothLeService;
 import com.ppp.esir.projetvelo.utils.BluetoothUtils;
 import com.ppp.esir.projetvelo.utils.Datacontainer;
 import com.ppp.esir.projetvelo.utils.ProjetVeloCommandsUtils;
+import com.ppp.esir.projetvelo.views.IDrawerItemSearchItinerary;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
@@ -124,6 +131,7 @@ public class ControleVeloActivity extends AppCompatActivity {
     };
     private EditText editDepart;
     private EditText editArrivee;
+    private Drawer drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +139,31 @@ public class ControleVeloActivity extends AppCompatActivity {
         setContentView(R.layout.activity_controle_velo);
         Datacontainer.setActivity(this);
         ProjetVeloCommandsUtils.initProjetVeloCommandsUtils(this);
+
+
+        //Add DRAWER
+        if (Datacontainer.isConnected()) {
+            // Create the AccountHeader
+            AccountHeader headerResult = new AccountHeaderBuilder()
+                    .withActivity(this)
+                    .addProfiles(
+                            new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.common_google_signin_btn_icon_dark))
+                    )
+                    .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                        @Override
+                        public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                            return false;
+                        }
+                    })
+                    .build();
+
+            //Now create your drawer and pass the AccountHeader.Result
+            new DrawerBuilder().withAccountHeader(headerResult).withActivity(this).build();
+        } else {
+            new DrawerBuilder().withActivity(this).addDrawerItems(new IDrawerItemSearchItinerary()).addDrawerItems(new IDrawerItemSearchItinerary()).build();
+
+        }
+
 
         locationManager = (LocationManager) this
                 .getSystemService(LOCATION_SERVICE);

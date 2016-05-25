@@ -6,6 +6,9 @@ import com.ppp.esir.projetvelo.models.Deplacement;
 import com.ppp.esir.projetvelo.models.User;
 import com.ppp.esir.projetvelo.utils.Datacontainer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 /**
@@ -42,6 +45,21 @@ public class Requete {
         return -1;
     }
 
+    public static User getUserInformation() {
+        HashMap<String, String> dataPost = new HashMap<>();
+        dataPost.put("login", Datacontainer.getUsername());
+        dataPost.put("password", Datacontainer.getPassword());
+        String rst = RequeteConfigurator.sendRequetePost(RequeteConfigurator.ApiRequete.GET_INFORMATIONS, dataPost);
+        User user = new User();
+        try {
+            JSONObject jsonObject = new JSONObject(rst);
+            jsonObject.getString("");
+            //TODO
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
     //login mp nom prenom / age
     public static int inscription(User user) {
         HashMap<String, String> dataPost = new HashMap<>();

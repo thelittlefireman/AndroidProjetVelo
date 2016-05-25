@@ -20,6 +20,15 @@ public class User {
         this.mEmail = email;
     }
 
+    public User() {
+        this.mLogin = "";
+        this.mPassword = "";
+        this.mAge = "";
+        this.mNom = "";
+        this.mPrenom = "";
+        this.mEmail = "";
+    }
+
     public String getmEmail() {
         return mEmail;
     }
