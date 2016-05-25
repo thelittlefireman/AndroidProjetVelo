@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -42,6 +43,8 @@ import net.steamcrafted.materialiconlib.MaterialIconView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.ppp.esir.projetvelo.R.id.iconBattery;
 
 public class ControleVeloActivity extends AppCompatActivity {
     public static boolean mapLock = false;
@@ -160,6 +163,17 @@ public class ControleVeloActivity extends AppCompatActivity {
         Datacontainer.setActivity(this);
         ProjetVeloCommandsUtils.initProjetVeloCommandsUtils(this);
 
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        ((TextView) toolbar.findViewById(R.id.title)).setText("Projet Vélo");
+        speedTextView = ((TextView) toolbar.findViewById(R.id.speed));
+        iconViewBattery = (MaterialIconView) toolbar.findViewById(iconBattery);
+
+
+        setSupportActionBar(toolbar);
+
+
         DrawerBuilder drawerBuilder = new DrawerBuilder();
         Drawer drawer = null;
         //Add DRAWER
@@ -188,8 +202,6 @@ public class ControleVeloActivity extends AppCompatActivity {
         //On récupère les composants graphiques
         gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);
-        speedTextView = (TextView) findViewById(R.id.speed);
-        iconViewBattery = (MaterialIconView) findViewById(R.id.iconBattery);
         distanceParcourue = (TextView) findViewById(R.id.distanceParcourue);
         buttonLess = (MaterialIconView) findViewById(R.id.buttonLess);
         buttonMore = (MaterialIconView) findViewById(R.id.buttonMore);
