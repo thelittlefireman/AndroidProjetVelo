@@ -92,7 +92,7 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
             //Construction de l'url à appeler
             final StringBuilder url = new StringBuilder("http://maps.googleapis.com/maps/api/directions/xml?sensor=false&alternatives=true&language=fr&mode=bicycling");
             url.append("&origin=");
-            if(editDepart.equals("Ma position"))
+            if (editDepart.equals("Ma position"))
                 url.append(this.myLatitude + "," + this.myLongitude);
             else
                 url.append(editDepart.replace(' ', '+'));
@@ -133,10 +133,11 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
                 }
             }
 
-            return true;
         } catch (final Exception e) {
             e.printStackTrace();
             return false;
+        } finally {
+            return true;
         }
     }
 
