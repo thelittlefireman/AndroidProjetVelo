@@ -98,7 +98,7 @@ public class ControleVeloActivity extends AppCompatActivity {
                             case ERROR:
                                 if (!data.equals("0")) {
                                     System.out.println("ERROR : " + data);
-                                    Toast.makeText(context, "Erreur du controller : " + data, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Erreur du controller : " + getErreur(data), Toast.LENGTH_SHORT).show();
                                 }
                                 break;
 
@@ -108,6 +108,23 @@ public class ControleVeloActivity extends AppCompatActivity {
             }
         }
     };
+
+    private String getErreur(String data) {
+        switch (data) {
+            case "1":
+                return "Throttle Signal Abnormality";
+            case "3":
+                return "Motor Hall Signal Abnormality";
+            case "4":
+                return "Torque Sensor Signal Abnormality";
+            case "5":
+                return "Speed Sensor Signal Abnormality (Suitable for torque system)";
+            case "6":
+                return "Motor or Controller Short Circuit Abnormality";
+        }
+        return "";
+    }
+
     private GoogleMap gMap;
     private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop;
     private TextView distanceParcourue;
