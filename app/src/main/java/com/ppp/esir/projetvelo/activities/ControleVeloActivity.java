@@ -56,6 +56,7 @@ import static com.ppp.esir.projetvelo.R.id.iconBattery;
 
 public class ControleVeloActivity extends AppCompatActivity {
     public static boolean mapLock = false;
+    public static String itineraireArrivee, itineraireDepart;
     private final int BATTERY_ELEMENT = 1;
     private final int SPEED_ELEMENT = 2;
     private final int ASSIST_ELEMENT = 3;
@@ -100,8 +101,7 @@ public class ControleVeloActivity extends AppCompatActivity {
 
                                 break;
                             case SPEED_ELEMENT:
-                                if (currentAssist != 0 && seekBarSpeed.getProgress() > 0)
-                                    speedTextView.setText(data);
+                                setSpeedText(data);
                                 break;
                             case ASSIST_ELEMENT:
                                 if (data.equals("0"))
@@ -123,8 +123,6 @@ public class ControleVeloActivity extends AppCompatActivity {
         }
     };
     private Timer myTimer;
-
-
     private GoogleMap gMap;
     private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop, buttonDrawer;
     private TextView distanceParcourue, distanceRest, timeRest;
@@ -149,8 +147,12 @@ public class ControleVeloActivity extends AppCompatActivity {
     };
     private Drawer drawer;
     private IDrawerItemSearchItinerary iDrawerItemSearchItinerary;
-    public static String itineraireArrivee, itineraireDepart;
     private MyLocationChangeListener myLocationChangeListener;
+
+    public void setSpeedText(String text) {
+        if (currentAssist != 0 && seekBarSpeed.getProgress() > 0)
+            speedTextView.setText(text);
+    }
 
     private String getErreur(String data) {
         switch (data) {
