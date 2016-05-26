@@ -9,11 +9,13 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -23,7 +25,10 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -225,6 +230,7 @@ public class ControleVeloActivity extends AppCompatActivity {
                 layoutDistTimeRest.setVisibility(View.VISIBLE);
 
                 iDrawerItemSearchItinerary.getButtonCancel().setEnabled(true);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             }
         };
 
@@ -234,6 +240,10 @@ public class ControleVeloActivity extends AppCompatActivity {
                 gMap.clear();
                 layoutDistTimeRest.setVisibility(View.GONE);
                 v.setEnabled(false);
+                Datacontainer.setItineraireSetting(false);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+                if (myTimer != null)
+                    myTimer.cancel();
             }
         };
 
@@ -331,17 +341,63 @@ public class ControleVeloActivity extends AppCompatActivity {
         gMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
-                ControleVeloActivity.mapLock = true;
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gMap.getMyLocation().getLatitude(), gMap.getMyLocation().getLongitude()), 18));
-                gMap.getUiSettings().setMyLocationButtonEnabled(false);
+                if(gMap.getMyLocation() != null)
+                {
+                    if(Datacontainer.isItineraireSetting())
+                    {
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(new LatLng(gMap.getMyLocation().getLatitude(), gMap.getMyLocation().getLongitude()))             // Sets the center of the map to current location
+                                .zoom(18)                   // Sets the zoom
+                                .bearing(gMap.getCameraPosition().bearing) // Sets the orientation of the camera to east
+                                .tilt(50)                   // Sets the tilt of the camera to 0 degrees
+                                .build();
+                        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
+                    else
+                    {
+                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gMap.getMyLocation().getLatitude(), gMap.getMyLocation().getLongitude()), 18));
+                    }
+                    ControleVeloActivity.mapLock = true;
+                    gMap.getUiSettings().setMyLocationButtonEnabled(false);
+                }
+                else
+                {
+                    Toast.makeText(ControleVeloActivity.this, "Veuillez activer le GPS", Toast.LENGTH_LONG).show();
+                }
+
                 return true;
             }
         });
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(gMap.getCameraPosition().target)             // Sets the center of the map to current location
+                        .zoom(gMap.getCameraPosition().zoom)                   // Sets the zoom
+                        .bearing(gMap.getCameraPosition().bearing) // Sets the orientation of the camera to east
+                        .tilt(0)                   // Sets the tilt of the camera to 0 degrees
+                        .build();
+                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 ControleVeloActivity.mapLock = false;
                 gMap.getUiSettings().setMyLocationButtonEnabled(true);
+            }
+        });
+        gMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                if(!Datacontainer.isItineraireSetting())
+                {
+                    final MarkerOptions marker = new MarkerOptions();
+                    marker.position(latLng);
+                    marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    gMap.addMarker(marker);
+                    iDrawerItemSearchItinerary.getEditTextArrive().setText(latLng.latitude + "," + latLng.longitude);
+                    drawer.openDrawer();
+                }
+                else
+                {
+                    Toast.makeText(ControleVeloActivity.this, "Annuler l'itineraire pour faire un point sur la carte", Toast.LENGTH_LONG).show();
+                }
             }
         });
         gMap.setMyLocationEnabled(true);

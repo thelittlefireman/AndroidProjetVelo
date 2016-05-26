@@ -77,13 +77,23 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
         Log.i(getClass().getName().toString(), "lat : " + location.getLatitude() + "    lng : " + location.getLongitude());
         map.getUiSettings().setScrollGesturesEnabled(false);
         LatLng coord = new LatLng(location.getLatitude(), location.getLongitude());
+        CameraPosition cameraPosition;
         if (location.hasBearing()) {
-            CameraPosition cameraPosition = new CameraPosition.Builder()
+            cameraPosition = new CameraPosition.Builder()
                     .target(coord)             // Sets the center of the map to current location
                     .zoom(minZoom)                   // Sets the zoom
                     .bearing(location.getBearing()) // Sets the orientation of the camera to east
                     .tilt(0)                   // Sets the tilt of the camera to 0 degrees
                     .build();
+            if(Datacontainer.isItineraireSetting())
+            {
+                cameraPosition = new CameraPosition.Builder()
+                        .target(coord)             // Sets the center of the map to current location
+                        .zoom(minZoom)                   // Sets the zoom
+                        .bearing(location.getBearing()) // Sets the orientation of the camera to east
+                        .tilt(50)                   // Sets the tilt of the camera to 30 degrees
+                        .build();
+            }
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
 
                 public void onFinish() {

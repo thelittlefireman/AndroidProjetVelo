@@ -39,6 +39,10 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
         return viewHolderEditText.buttonCancel;
     }
 
+    public EditText getEditTextArrive() {
+        return viewHolderEditText.editTextArrivee;
+    }
+
     @Override
     public ViewHolderFactory<IDrawerItemSearchItinerary.ViewHolderEditText> getFactory() {
         return new ItemFactory();

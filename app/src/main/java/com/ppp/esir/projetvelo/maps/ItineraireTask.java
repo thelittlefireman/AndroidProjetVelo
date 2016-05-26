@@ -284,6 +284,8 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
             }
             gMap.addPolyline(polylines);
             gMap.addMarker(markerB);
+
+            Datacontainer.setItineraireSetting(true);
         }
     }
 }

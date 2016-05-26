@@ -18,6 +18,7 @@ public class Datacontainer {
     private static LatLng lastPoint;
     private static String depart;
     private static String arrive;
+    private static boolean itineraireSetting;
 
 
     public static User getActualUser() {
@@ -90,5 +91,13 @@ public class Datacontainer {
 
     public static void setArrive(String arrive) {
         Datacontainer.arrive = arrive;
+    }
+
+    public static boolean isItineraireSetting() {
+        return itineraireSetting;
+    }
+
+    public static void setItineraireSetting(boolean itineraireSetting) {
+        Datacontainer.itineraireSetting = itineraireSetting;
     }
 }
