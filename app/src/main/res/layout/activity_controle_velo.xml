@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/map">
+            android:layout_above="@+id/map">
             <TextView
                 android:id="@+id/distanceRest"
                 android:layout_width="0dp"
@@ -36,7 +36,7 @@
             class="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/includeVeloPanel"
+            android:layout_above="@+id/includeVeloPanel"
             android:layout_alignParentTop="true" />
 
         <include

@@ -197,9 +197,14 @@ public class ControleVeloActivity extends AppCompatActivity {
                 myTimer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        itineraire(false);
+                        ControleVeloActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                itineraire(false);
+                            }
+                        });
                     }
-                }, 30000, 30000); // initial delay 30 second, interval 30 second
+                }, 10000, 10000); // initial delay 30 second, interval 30 second
 
             }
         });
