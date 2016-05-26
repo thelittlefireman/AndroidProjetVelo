@@ -16,7 +16,7 @@
         android:layout_below="@+id/toolbar">
 
         <LinearLayout
-            android:id="@+id/distTimeRest"
+            android:id="@+id/layoutDistTimeRest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/includeVeloPanel"
-            android:layout_below="@id/distTimeRest"/>
+            android:layout_below="@id/layoutDistTimeRest"/>
 
 
     </RelativeLayout>
