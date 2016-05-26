@@ -94,7 +94,7 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
             return buttonSearch;
         }
 
-        public Button getMyLocation() {
+        public MaterialIconView getMyLocation() {
             return myLocation;
         }
     }
