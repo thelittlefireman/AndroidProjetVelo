@@ -336,6 +336,7 @@ public class ControleVeloActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
+        myTimer.cancel();
     }
 
     @Override
