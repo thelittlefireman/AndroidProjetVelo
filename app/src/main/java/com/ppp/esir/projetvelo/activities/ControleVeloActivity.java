@@ -241,9 +241,17 @@ public class ControleVeloActivity extends AppCompatActivity {
                 layoutDistTimeRest.setVisibility(View.GONE);
                 v.setEnabled(false);
                 Datacontainer.setItineraireSetting(false);
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(gMap.getCameraPosition().target)             // Sets the center of the map to current location
+                        .zoom(gMap.getCameraPosition().zoom)                   // Sets the zoom
+                        .bearing(gMap.getCameraPosition().bearing) // Sets the orientation of the camera to east
+                        .tilt(0)                   // Sets the tilt of the camera to 0 degrees
+                        .build();
+                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
                 if (myTimer != null)
                     myTimer.cancel();
+                drawer.closeDrawer();
             }
         };
 
