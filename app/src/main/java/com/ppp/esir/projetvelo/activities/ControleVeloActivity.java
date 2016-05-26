@@ -149,7 +149,7 @@ public class ControleVeloActivity extends AppCompatActivity {
 
     public void setSpeedText(String text, boolean speedRoue) {
         if ((speedRoue && ((currentAssist != 0 && seekBarSpeed.getProgress() > 0) || currentAssist == 6))
-                || (!speedRoue && (currentAssist == 0 || (seekBarSpeed.getProgress() < 0 && currentAssist != 6))))
+                || (!speedRoue && (currentAssist == 0 || (seekBarSpeed.getProgress() == 0 && currentAssist != 6))))
             speedTextView.setText(text);
     }
 

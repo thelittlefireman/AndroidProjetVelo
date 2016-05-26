@@ -61,9 +61,9 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
         {
             //Convert LatLng to Location
             Location lastLocation = new Location("lastPoint");
-            location.setLatitude(Datacontainer.getLastPoint().latitude);
-            location.setLongitude(Datacontainer.getLastPoint().longitude);
-            location.setTime(new Date().getTime());
+            lastLocation.setLatitude(Datacontainer.getLastPoint().latitude);
+            lastLocation.setLongitude(Datacontainer.getLastPoint().longitude);
+            lastLocation.setTime(new Date().getTime());
 
             if(location.distanceTo(lastLocation) < 50){
                 Requete.addDeplacement(new Deplacement(String.valueOf(speed), Datacontainer.getDepart(), Datacontainer.getArrive(), this.distance.getText().toString()));

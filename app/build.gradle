@@ -36,7 +36,6 @@ dependencies {
     compile 'uk.co.alt236:bluetooth-le-library-android:1.0.0'
     compile 'net.steamcrafted:materialiconlib:1.0.9'
     compile 'com.heinrichreimersoftware:material-singleinputform:2.1.2'
-    compile 'com.sothree.slidinguppanel:library:3.3.0'
     compile('com.mikepenz:materialdrawer:5.2.6@aar') {
         transitive = true
     }
