@@ -14,6 +14,7 @@ import com.ppp.esir.projetvelo.activities.ControleVeloActivity;
  * Created by Guillaume on 24/05/2016.
  */
 public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeListener {
+    private TextView speedTextView;
     private Location lastLocation;
     public float distanceParcourue;
     private TextView distance;
@@ -21,13 +22,14 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
     private boolean firstTime;
     private float speed;
 
-    public MyLocationChangeListener(TextView distanceParcourue, GoogleMap gMap) {
+    public MyLocationChangeListener(TextView distanceParcourue, TextView speedTextView, GoogleMap gMap) {
         this.distance = distanceParcourue;
         this.lastLocation = null;
         this.distanceParcourue = 0;
         this.distance.setText("GPS?");
         this.map = gMap;
         this.firstTime = true;
+        this.speedTextView = speedTextView;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
 
         lastLocation = location;
         speed = (float) Math.round(location.getSpeed() * 360) / 100;
-
+        speedTextView.setText(String.valueOf(speed));
     }
 
     public void animateCameraTo(final Location location, final float minZoom) {

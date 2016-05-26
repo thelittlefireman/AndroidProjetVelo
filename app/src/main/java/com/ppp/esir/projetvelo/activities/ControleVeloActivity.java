@@ -99,8 +99,6 @@ public class ControleVeloActivity extends AppCompatActivity {
                             case SPEED_ELEMENT:
                                 if (currentAssist != 0 && seekBarSpeed.getProgress() > 0)
                                     speedTextView.setText(data);
-                                else
-                                    speedTextView.setText(String.valueOf(myLocationChangeListener.getSpeed()));
                                 break;
                             case ASSIST_ELEMENT:
                                 if (data.equals("0"))
@@ -324,7 +322,7 @@ public class ControleVeloActivity extends AppCompatActivity {
             }
         });
         gMap.setMyLocationEnabled(true);
-        myLocationChangeListener = new MyLocationChangeListener(distanceParcourue, gMap);
+        myLocationChangeListener = new MyLocationChangeListener(distanceParcourue, speedTextView, gMap);
         gMap.setOnMyLocationChangeListener(myLocationChangeListener);
 
         final Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
