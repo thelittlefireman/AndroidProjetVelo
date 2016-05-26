@@ -1,7 +1,5 @@
 package com.ppp.esir.projetvelo.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -223,14 +221,8 @@ public class ControleVeloActivity extends AppCompatActivity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
-                // Prepare the View for the animation
-                layoutDistTimeRest.setVisibility(View.VISIBLE);
-                layoutDistTimeRest.setAlpha(0.0f);
 
-                // Start the animation
-                layoutDistTimeRest.animate()
-                        .translationY(layoutDistTimeRest.getHeight())
-                        .alpha(1.0f);
+                layoutDistTimeRest.setVisibility(View.VISIBLE);
 
                 iDrawerItemSearchItinerary.getButtonCancel().setEnabled(true);
             }
@@ -240,18 +232,7 @@ public class ControleVeloActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 gMap.clear();
-                layoutDistTimeRest.animate()
-                        .translationY(0)
-                        .alpha(0.0f)
-                        .setListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                layoutDistTimeRest.setVisibility(View.GONE);
-                            }
-                        });
-                if (myTimer != null)
-                    myTimer.cancel();
+                layoutDistTimeRest.setVisibility(View.GONE);
                 v.setEnabled(false);
             }
         };
@@ -259,7 +240,7 @@ public class ControleVeloActivity extends AppCompatActivity {
         iDrawerItemSearchItinerary = new IDrawerItemSearchItinerary(listenerSearch, listenerCancel);
 
 
-            //Add DRAWER
+        //Add DRAWER
         if (Datacontainer.isConnected()) {
             // Create the AccountHeader
             AccountHeader headerResult = new AccountHeaderBuilder()

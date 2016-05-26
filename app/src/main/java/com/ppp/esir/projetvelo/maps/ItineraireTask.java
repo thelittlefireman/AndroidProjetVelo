@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.ppp.esir.projetvelo.utils.Datacontainer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -265,6 +266,7 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
             markerA.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
             //On déclare un marker rouge que l'on mettra sur l'arrivée
+            Datacontainer.setLastPoint(lstLatLng.get(lstLatLng.size() - 1));
             final MarkerOptions markerB = new MarkerOptions();
             markerB.position(lstLatLng.get(lstLatLng.size() - 1));
             markerB.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));

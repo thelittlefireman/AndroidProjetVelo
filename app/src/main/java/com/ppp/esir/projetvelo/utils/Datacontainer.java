@@ -3,6 +3,7 @@ package com.ppp.esir.projetvelo.utils;
 import android.app.Activity;
 import android.content.Context;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.ppp.esir.projetvelo.models.User;
 
 /**
@@ -14,6 +15,7 @@ public class Datacontainer {
     private static String username, password;
     private static User actualUser = null;
     private static boolean isConnected = false;
+    private static LatLng lastPoint;
 
     public static User getActualUser() {
         return actualUser;
@@ -63,4 +65,11 @@ public class Datacontainer {
         new TinyDB(getActivity()).putString("password", password);
     }
 
+    public static LatLng getLastPoint() {
+        return lastPoint;
+    }
+
+    public static void setLastPoint(LatLng lastPoint) {
+        Datacontainer.lastPoint = lastPoint;
+    }
 }
