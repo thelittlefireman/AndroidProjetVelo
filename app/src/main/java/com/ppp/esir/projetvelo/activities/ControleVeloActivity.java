@@ -99,7 +99,7 @@ public class ControleVeloActivity extends AppCompatActivity {
 
                                 break;
                             case SPEED_ELEMENT:
-                                setSpeedText(data);
+                                setSpeedText(data, true);
                                 break;
                             case ASSIST_ELEMENT:
                                 if (data.equals("0"))
@@ -147,10 +147,10 @@ public class ControleVeloActivity extends AppCompatActivity {
     private IDrawerItemSearchItinerary iDrawerItemSearchItinerary;
     private MyLocationChangeListener myLocationChangeListener;
 
-    public void setSpeedText(String text) {
-        if ((currentAssist != 0 && seekBarSpeed.getProgress() > 0) || currentAssist == 6)
+    public void setSpeedText(String text, boolean speedRoue) {
+        if ((speedRoue && ((currentAssist != 0 && seekBarSpeed.getProgress() > 0) || currentAssist == 6))
+                || (!speedRoue && (currentAssist == 0 || (seekBarSpeed.getProgress() < 0 && currentAssist != 6))))
             speedTextView.setText(text);
-
     }
 
     private String getErreur(String data) {
@@ -366,6 +366,12 @@ public class ControleVeloActivity extends AppCompatActivity {
         unbindService(mServiceConnection);
         if (myTimer != null)
             myTimer.cancel();
+    }
+
+    @Override
+    public void onBackPressed(){
+        getmBluetoothLeService().disconnect();
+        finish();
     }
 
     @Override

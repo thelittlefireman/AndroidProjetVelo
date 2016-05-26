@@ -9,6 +9,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.ppp.esir.projetvelo.activities.ControleVeloActivity;
+import com.ppp.esir.projetvelo.models.Deplacement;
+import com.ppp.esir.projetvelo.requetes.Requete;
+import com.ppp.esir.projetvelo.utils.Datacontainer;
+
+import java.util.Date;
 
 /**
  * Created by Guillaume on 24/05/2016.
@@ -50,7 +55,20 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
 
         lastLocation = location;
         speed = (float) Math.round(location.getSpeed() * 360) / 100;
-        controleVeloActivity.setSpeedText(String.valueOf(speed));
+        controleVeloActivity.setSpeedText(String.valueOf(speed), false);
+
+        if(Datacontainer.getLastPoint() != null)
+        {
+            //Convert LatLng to Location
+            Location lastLocation = new Location("lastPoint");
+            location.setLatitude(Datacontainer.getLastPoint().latitude);
+            location.setLongitude(Datacontainer.getLastPoint().longitude);
+            location.setTime(new Date().getTime());
+
+            if(location.distanceTo(lastLocation) < 50){
+                Requete.addDeplacement(new Deplacement(String.valueOf(speed), Datacontainer.getDepart(), Datacontainer.getArrive(), this.distance.getText().toString()));
+            }
+        }
     }
 
     public void animateCameraTo(final Location location, final float minZoom) {

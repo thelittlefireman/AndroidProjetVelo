@@ -16,6 +16,9 @@ public class Datacontainer {
     private static User actualUser = null;
     private static boolean isConnected = false;
     private static LatLng lastPoint;
+    private static String depart;
+    private static String arrive;
+
 
     public static User getActualUser() {
         return actualUser;
@@ -71,5 +74,21 @@ public class Datacontainer {
 
     public static void setLastPoint(LatLng lastPoint) {
         Datacontainer.lastPoint = lastPoint;
+    }
+
+    public static String getDepart() {
+        return depart;
+    }
+
+    public static void setDepart(String depart) {
+        Datacontainer.depart = depart;
+    }
+
+    public static String getArrive() {
+        return arrive;
+    }
+
+    public static void setArrive(String arrive) {
+        Datacontainer.arrive = arrive;
     }
 }
