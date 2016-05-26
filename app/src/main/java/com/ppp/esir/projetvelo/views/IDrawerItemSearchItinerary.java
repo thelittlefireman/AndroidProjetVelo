@@ -2,6 +2,8 @@ package com.ppp.esir.projetvelo.views;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,6 +75,7 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
         private EditText editTextDepart, editTextArrivee;
         private Button buttonSearch;
         private MaterialIconView myLocation;
+        TextWatcher textWatcher;
 
         public ViewHolderEditText(View itemView) {
             super(itemView);
@@ -80,6 +83,28 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
             this.editTextArrivee = (EditText) itemView.findViewById(R.id.editArrivee);
             this.buttonSearch = (Button) itemView.findViewById(R.id.btnSearch);
             this.myLocation = (MaterialIconView) itemView.findViewById(R.id.myLocation);
+            buttonSearch.setEnabled(false);
+            textWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (editTextDepart.getText().length() > 0 && editTextArrivee.getText().length() > 0)
+                        buttonSearch.setEnabled(true);
+                    else
+                        buttonSearch.setEnabled(false);
+                }
+            };
+            this.editTextDepart.addTextChangedListener(textWatcher);
+            this.editTextArrivee.addTextChangedListener(textWatcher);
         }
 
         public EditText getEditTextDepart() {
@@ -97,6 +122,7 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
         public MaterialIconView getMyLocation() {
             return myLocation;
         }
+
     }
 
 }
