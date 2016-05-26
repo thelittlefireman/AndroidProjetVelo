@@ -210,14 +210,17 @@ public class ControleVeloActivity extends AppCompatActivity {
             //Now create your drawer and pass the AccountHeader.Result
             drawerBuilder.withAccountHeader(headerResult);
         }
-        drawer = drawerBuilder.withActivity(this).addDrawerItems(iDrawerItemSearchItinerary, new DividerDrawerItem(), new PrimaryDrawerItem().withName("Déconnexion").withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                getmBluetoothLeService().disconnect();
-                finish();
-                return true;
-            }
-        })).build();
+        drawer = drawerBuilder
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .addDrawerItems(iDrawerItemSearchItinerary, new DividerDrawerItem(), new PrimaryDrawerItem().withName("Déconnexion").withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        getmBluetoothLeService().disconnect();
+                        finish();
+                        return true;
+                    }
+                })).build();
         //On récupère les composants graphiques
         gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);

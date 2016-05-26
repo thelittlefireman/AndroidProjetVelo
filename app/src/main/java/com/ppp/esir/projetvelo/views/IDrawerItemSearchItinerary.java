@@ -10,6 +10,8 @@ import com.mikepenz.fastadapter.utils.ViewHolderFactory;
 import com.mikepenz.materialdrawer.model.BaseDrawerItem;
 import com.ppp.esir.projetvelo.R;
 
+import net.steamcrafted.materialiconlib.MaterialIconView;
+
 /**
  * Created by thoma on 25/05/2016.
  */
@@ -28,6 +30,7 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
     public String getArrivee() {
         return viewHolderEditText.editTextArrivee.getText().toString();
     }
+
     @Override
     public ViewHolderFactory<IDrawerItemSearchItinerary.ViewHolderEditText> getFactory() {
         return new ItemFactory();
@@ -68,14 +71,15 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
 
     public static class ViewHolderEditText extends RecyclerView.ViewHolder {
         private EditText editTextDepart, editTextArrivee;
-        private Button buttonSearch, myLocation;
+        private Button buttonSearch;
+        private MaterialIconView myLocation;
 
         public ViewHolderEditText(View itemView) {
             super(itemView);
             this.editTextDepart = (EditText) itemView.findViewById(R.id.editDepart);
             this.editTextArrivee = (EditText) itemView.findViewById(R.id.editArrivee);
             this.buttonSearch = (Button) itemView.findViewById(R.id.btnSearch);
-            this.myLocation = (Button) itemView.findViewById(R.id.myLocation);
+            this.myLocation = (MaterialIconView) itemView.findViewById(R.id.myLocation);
         }
 
         public EditText getEditTextDepart() {

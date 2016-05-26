@@ -118,6 +118,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
     };
     private BluetoothLeService mBluetoothLeService;
+    private String mDeviceAddress = "54:4A:16:25:A4:9F";
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(final ComponentName componentName, final IBinder service) {
@@ -127,7 +128,7 @@ public class BluetoothActivity extends AppCompatActivity {
                 finish();
             }
             // Automatically connects to the device upon successful start-up initialization.
-            // mBluetoothLeService.connect(mDeviceAddress);
+            mBluetoothLeService.connect(mDeviceAddress);
         }
 
         @Override
@@ -234,6 +235,7 @@ public class BluetoothActivity extends AppCompatActivity {
     public void stopScan() {
         mScanner.scanLeDevice(-1, false);
     }
+
     private void startScan() {
         refreshHelper.startLoading();
         final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();

@@ -14,7 +14,8 @@
             android:id="@+id/distanceParcourue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textColor="@android:color/white"
             android:textSize="21sp"
             android:textStyle="bold" />
 
@@ -25,7 +26,7 @@
             android:background="#00ffffff"
             android:padding="5dp"
             app:materialIcon="minus_circle"
-            app:materialIconColor="@android:color/darker_gray"
+            app:materialIconColor="@android:color/white"
             app:materialIconSize="32dp" />
 
         <TextView
@@ -35,7 +36,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="10dp"
             android:text="0"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="21sp"
             android:textStyle="bold" />
 
@@ -47,7 +48,7 @@
             android:background="#00ffffff"
             android:padding="5dp"
             app:materialIcon="plus_circle"
-            app:materialIconColor="@android:color/darker_gray"
+            app:materialIconColor="@android:color/white"
             app:materialIconSize="32dp" />
 
         <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -57,7 +58,7 @@
             android:background="#00ffffff"
             android:padding="5dp"
             app:materialIcon="walk"
-            app:materialIconColor="@android:color/darker_gray"
+            app:materialIconColor="@android:color/white"
             app:materialIconSize="32dp" />
 
         <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -68,7 +69,7 @@
             android:background="#00ffffff"
             android:padding="5dp"
             app:materialIcon="pause_circle"
-            app:materialIconColor="@android:color/holo_red_dark"
+            app:materialIconColor="@color/colorAccent"
             app:materialIconSize="32dp" />
     </LinearLayout>
 

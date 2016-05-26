@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
+    android:layout_margin="20dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -18,11 +17,18 @@
             android:text="Départ"
             android:textStyle="bold" />
 
-        <Button
+
+        <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/myLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ma pos" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="#00ffffff"
+            android:paddingRight="20dp"
+            app:materialIcon="map_marker_radius"
+            app:materialIconColor="@color/colorAccent"
+            app:materialIconSize="34dp" />
 
         <EditText
             android:id="@+id/editDepart"
@@ -58,6 +64,7 @@
 
     <Button
         android:id="@+id/btnSearch"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Rechercher" />

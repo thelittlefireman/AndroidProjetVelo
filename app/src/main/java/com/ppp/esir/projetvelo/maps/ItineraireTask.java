@@ -193,6 +193,7 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
             for (final LatLng latLng : lstLatLng) {
                 polylines.add(latLng);
             }
+            String reqElevation = "https://maps.googleapis.com/maps/api/elevation/json?path=36.578581,-118.291994|36.23998,-116.83171&samples=3";
 
             //On déclare un marker vert que l'on placera sur le départ
             final MarkerOptions markerA = new MarkerOptions();
