@@ -214,7 +214,7 @@ public class ControleVeloActivity extends AppCompatActivity {
                             }
                         });
                     }
-                }, 10000, 10000); // initial delay 30 second, interval 30 second
+                }, 5000, 5000); // initial delay 30 second, interval 30 second
                 drawer.closeDrawer();
                 View view = ControleVeloActivity.this.getCurrentFocus();
                 if (view != null) {

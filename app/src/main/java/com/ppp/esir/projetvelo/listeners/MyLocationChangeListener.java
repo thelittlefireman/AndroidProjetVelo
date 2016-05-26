@@ -41,12 +41,14 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
     public void onMyLocationChange(Location location) {
         if (this.firstTime) {
             animateCameraTo(location, 15);
-        } else if (lastLocation != null && lastLocation.getAccuracy() < 10 && location.getAccuracy() < 10) {
+        } else if (lastLocation != null && lastLocation.getAccuracy() < 15 && location.getAccuracy() < 15) {
             distanceParcourue += lastLocation.distanceTo(location);
-            if (distanceParcourue < 1000)
-                this.distance.setText(String.valueOf(Math.round(distanceParcourue * 100) / 100) + " m");
-            else
-                this.distance.setText(String.valueOf(Math.round((distanceParcourue / 1000) * 100) / 100) + " Km");
+            int km = (int) Math.floor(distanceParcourue / 1000);
+            int m = (int) Math.ceil(distanceParcourue) % 1000;
+            String metre = (m > 0 ? m + " m" : "");
+            String metre2 = (m > 0 ? "," + m : "");
+            String distanceText = (km > 0 ? km + "," + metre2 + "Km " : metre);
+            this.distance.setText(distanceText);
         }
         if (!firstTime && ControleVeloActivity.mapLock)
             animateCameraTo(location, this.map.getCameraPosition().zoom);
