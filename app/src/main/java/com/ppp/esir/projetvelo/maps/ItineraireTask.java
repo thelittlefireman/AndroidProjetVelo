@@ -261,7 +261,7 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
             this.distanceRest.setText(distanceText);
 
             int hour = (int) Math.floor(time / 3600);
-            int min = (int) Math.ceil(time / 60) % 3600;
+            int min = (int) Math.ceil(time % 3600)/60;
             String timeText = (hour > 0 ? hour + " h " : "") + (min > 0 ? min + " min" : "");
             this.timeRest.setText(timeText);
 
