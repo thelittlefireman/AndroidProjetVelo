@@ -7,6 +7,7 @@ package com.ppp.esir.projetvelo.maps;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -120,6 +121,7 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
             }*/
 
             //Appel du web service
+            Log.i(this.getClass().getName(), "url direction : " + url.toString());
             final InputStream stream = new URL(url.toString()).openStream();
 
             //Traitement des données

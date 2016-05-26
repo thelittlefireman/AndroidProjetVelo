@@ -1,5 +1,7 @@
 package com.ppp.esir.projetvelo.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,6 +128,7 @@ public class ControleVeloActivity extends AppCompatActivity {
     private GoogleMap gMap;
     private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop, buttonDrawer;
     private TextView distanceParcourue, distanceRest, timeRest;
+    private LinearLayout layoutDistTimeRest;
     private BluetoothLeService mBluetoothLeService;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -189,7 +193,7 @@ public class ControleVeloActivity extends AppCompatActivity {
 
         DrawerBuilder drawerBuilder = new DrawerBuilder();
 
-        iDrawerItemSearchItinerary = new IDrawerItemSearchItinerary(new View.OnClickListener() {
+        View.OnClickListener listenerSearch = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 itineraireDepart = iDrawerItemSearchItinerary.getDepart();
@@ -216,9 +220,43 @@ public class ControleVeloActivity extends AppCompatActivity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
+                // Prepare the View for the animation
+                layoutDistTimeRest.setVisibility(View.VISIBLE);
+                layoutDistTimeRest.setAlpha(0.0f);
+
+                // Start the animation
+                layoutDistTimeRest.animate()
+                        .translationY(layoutDistTimeRest.getHeight())
+                        .alpha(1.0f);
+
+                iDrawerItemSearchItinerary.getButtonCancel().setEnabled(true);
             }
-        });
-        //Add DRAWER
+        };
+
+        View.OnClickListener listenerCancel = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gMap.clear();
+                layoutDistTimeRest.animate()
+                        .translationY(0)
+                        .alpha(0.0f)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                layoutDistTimeRest.setVisibility(View.GONE);
+                            }
+                        });
+                if (myTimer != null)
+                    myTimer.cancel();
+                v.setEnabled(false);
+            }
+        };
+
+        iDrawerItemSearchItinerary = new IDrawerItemSearchItinerary(listenerSearch, listenerCancel);
+
+
+            //Add DRAWER
         if (Datacontainer.isConnected()) {
             // Create the AccountHeader
             AccountHeader headerResult = new AccountHeaderBuilder()
@@ -253,6 +291,7 @@ public class ControleVeloActivity extends AppCompatActivity {
         gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);
         distanceParcourue = (TextView) findViewById(R.id.distanceParcourue);
+        layoutDistTimeRest = (LinearLayout) findViewById(R.id.layoutDistTimeRest);
         distanceRest = (TextView) findViewById(R.id.distanceRest);
         timeRest = (TextView) findViewById(R.id.timeRest);
         buttonLess = (MaterialIconView) findViewById(R.id.buttonLess);
@@ -341,7 +380,8 @@ public class ControleVeloActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
-        myTimer.cancel();
+        if (myTimer != null)
+            myTimer.cancel();
     }
 
     @Override

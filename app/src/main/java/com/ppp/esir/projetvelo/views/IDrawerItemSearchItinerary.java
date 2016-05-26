@@ -19,10 +19,12 @@ import net.steamcrafted.materialiconlib.MaterialIconView;
  */
 public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearchItinerary, IDrawerItemSearchItinerary.ViewHolderEditText> {
     private View.OnClickListener onClickListener;
+    private View.OnClickListener onClickListenerCancel;
     private ViewHolderEditText viewHolderEditText;
 
-    public IDrawerItemSearchItinerary(View.OnClickListener onClickListener) {
+    public IDrawerItemSearchItinerary(View.OnClickListener onClickListener, View.OnClickListener onClickListenerCancel) {
         this.onClickListener = onClickListener;
+        this.onClickListenerCancel = onClickListenerCancel;
     }
 
     public String getDepart() {
@@ -31,6 +33,10 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
 
     public String getArrivee() {
         return viewHolderEditText.editTextArrivee.getText().toString();
+    }
+
+    public Button getButtonCancel() {
+        return viewHolderEditText.buttonCancel;
     }
 
     @Override
@@ -53,6 +59,7 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
         Context ctx = viewHolder.itemView.getContext();
         //bind the basic view parts
         viewHolder.buttonSearch.setOnClickListener(this.onClickListener);
+        viewHolder.buttonCancel.setOnClickListener(this.onClickListenerCancel);
         viewHolder.myLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +80,7 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
 
     public static class ViewHolderEditText extends RecyclerView.ViewHolder {
         private EditText editTextDepart, editTextArrivee;
-        private Button buttonSearch;
+        private Button buttonSearch, buttonCancel;
         private MaterialIconView myLocation;
         TextWatcher textWatcher;
 
@@ -82,8 +89,10 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
             this.editTextDepart = (EditText) itemView.findViewById(R.id.editDepart);
             this.editTextArrivee = (EditText) itemView.findViewById(R.id.editArrivee);
             this.buttonSearch = (Button) itemView.findViewById(R.id.btnSearch);
+            this.buttonCancel = (Button) itemView.findViewById(R.id.btnCancel);
             this.myLocation = (MaterialIconView) itemView.findViewById(R.id.myLocation);
-            buttonSearch.setEnabled(false);
+            this.buttonSearch.setEnabled(false);
+            this.buttonCancel.setEnabled(false);
             textWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -123,6 +132,9 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
             return myLocation;
         }
 
+        public Button getButtonCancel() {
+            return buttonCancel;
+        }
     }
 
 }
