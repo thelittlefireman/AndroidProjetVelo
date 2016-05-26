@@ -14,8 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +50,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.ppp.esir.projetvelo.R.id.iconBattery;
-import static com.ppp.esir.projetvelo.R.id.time;
 
 public class ControleVeloActivity extends AppCompatActivity {
     public static boolean mapLock = false;
@@ -191,7 +189,7 @@ public class ControleVeloActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Itineraire
                 itineraire(true);
-                if(myTimer != null)
+                if (myTimer != null)
                     myTimer.cancel();
                 myTimer = new Timer();
                 myTimer.schedule(new TimerTask() {
@@ -205,7 +203,12 @@ public class ControleVeloActivity extends AppCompatActivity {
                         });
                     }
                 }, 10000, 10000); // initial delay 30 second, interval 30 second
-
+                drawer.closeDrawer();
+                View view = ControleVeloActivity.this.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
         });
         //Add DRAWER
@@ -318,10 +321,9 @@ public class ControleVeloActivity extends AppCompatActivity {
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
     }
 
-    public void itineraire(boolean animate)
-    {
+    public void itineraire(boolean animate) {
         ItineraireTask myTask = new ItineraireTask(ControleVeloActivity.this, gMap, iDrawerItemSearchItinerary.getDepart(), iDrawerItemSearchItinerary.getArrivee(), animate, distanceRest, timeRest);
-        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.HONEYCOMB)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
             myTask.execute();
