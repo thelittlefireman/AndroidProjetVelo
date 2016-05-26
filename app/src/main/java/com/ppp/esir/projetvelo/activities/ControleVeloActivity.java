@@ -60,6 +60,7 @@ public class ControleVeloActivity extends AppCompatActivity {
     private TextView assistanceTextView, speedTextView;
     private SeekBar seekBarSpeed;
     private MaterialIconView iconViewBattery;
+    private int currentAssist;
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {
@@ -96,11 +97,15 @@ public class ControleVeloActivity extends AppCompatActivity {
 
                                 break;
                             case SPEED_ELEMENT:
-                                speedTextView.setText(data);
+                                if (currentAssist != 0 && seekBarSpeed.getProgress() > 0)
+                                    speedTextView.setText(data);
+                                else
+                                    speedTextView.setText(String.valueOf(myLocationChangeListener.getSpeed()));
                                 break;
                             case ASSIST_ELEMENT:
                                 if (data.equals("0"))
                                     seekBarSpeed.setProgress(0);
+                                currentAssist = Integer.parseInt(data);
                                 assistanceTextView.setText(data);
                                 break;
                             case ERROR:
@@ -143,6 +148,7 @@ public class ControleVeloActivity extends AppCompatActivity {
     private Drawer drawer;
     private IDrawerItemSearchItinerary iDrawerItemSearchItinerary;
     public static String itineraireArrivee, itineraireDepart;
+    private MyLocationChangeListener myLocationChangeListener;
 
     private String getErreur(String data) {
         switch (data) {
@@ -318,7 +324,8 @@ public class ControleVeloActivity extends AppCompatActivity {
             }
         });
         gMap.setMyLocationEnabled(true);
-        gMap.setOnMyLocationChangeListener(new MyLocationChangeListener(distanceParcourue, gMap));
+        myLocationChangeListener = new MyLocationChangeListener(distanceParcourue, gMap);
+        gMap.setOnMyLocationChangeListener(myLocationChangeListener);
 
         final Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);

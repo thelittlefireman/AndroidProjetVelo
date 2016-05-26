@@ -19,6 +19,7 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
     private TextView distance;
     private GoogleMap map;
     private boolean firstTime;
+    private float speed;
 
     public MyLocationChangeListener(TextView distanceParcourue, GoogleMap gMap) {
         this.distance = distanceParcourue;
@@ -40,20 +41,21 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
             else
                 this.distance.setText(String.valueOf(Math.round((distanceParcourue / 1000) * 100) / 100) + " Km");
         }
-        if(!firstTime && ControleVeloActivity.mapLock)
+        if (!firstTime && ControleVeloActivity.mapLock)
             animateCameraTo(location, this.map.getCameraPosition().zoom);
-        else if(firstTime)
+        else if (firstTime)
             this.firstTime = false;
 
         lastLocation = location;
+        speed = (float) Math.round(location.getSpeed() * 360) / 100;
+
     }
 
     public void animateCameraTo(final Location location, final float minZoom) {
         Log.i(getClass().getName().toString(), "lat : " + location.getLatitude() + "    lng : " + location.getLongitude());
         map.getUiSettings().setScrollGesturesEnabled(false);
         LatLng coord = new LatLng(location.getLatitude(), location.getLongitude());
-        if(location.hasBearing())
-        {
+        if (location.hasBearing()) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(coord)             // Sets the center of the map to current location
                     .zoom(minZoom)                   // Sets the zoom
@@ -71,9 +73,7 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
 
                 }
             });
-        }
-        else
-        {
+        } else {
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(coord, minZoom), new GoogleMap.CancelableCallback() {
 
                 public void onFinish() {
@@ -86,5 +86,13 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
                 }
             });
         }
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }
