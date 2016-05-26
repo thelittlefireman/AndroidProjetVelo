@@ -395,6 +395,7 @@ public class ControleVeloActivity extends AppCompatActivity {
             public void onMapLongClick(LatLng latLng) {
                 if(!Datacontainer.isItineraireSetting())
                 {
+                    gMap.clear();
                     final MarkerOptions marker = new MarkerOptions();
                     marker.position(latLng);
                     marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
