@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,10 +45,13 @@ import com.ppp.esir.projetvelo.views.IDrawerItemSearchItinerary;
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.ppp.esir.projetvelo.R.id.iconBattery;
+import static com.ppp.esir.projetvelo.R.id.time;
 
 public class ControleVeloActivity extends AppCompatActivity {
     public static boolean mapLock = false;
@@ -113,9 +118,12 @@ public class ControleVeloActivity extends AppCompatActivity {
             }
         }
     };
+    private Timer myTimer;
+
+
     private GoogleMap gMap;
     private MaterialIconView buttonMore, buttonLess, pedestrianSpeed, buttonEmergencyStop, buttonDrawer;
-    private TextView distanceParcourue;
+    private TextView distanceParcourue, distanceRest, timeRest;
     private BluetoothLeService mBluetoothLeService;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -182,11 +190,21 @@ public class ControleVeloActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Itineraire
-                ItineraireTask myTask = new ItineraireTask(ControleVeloActivity.this, gMap, iDrawerItemSearchItinerary.getDepart(), iDrawerItemSearchItinerary.getArrivee());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                    myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                else
-                    myTask.execute();
+                itineraire(true);
+                if(myTimer != null)
+                    myTimer.cancel();
+                myTimer = new Timer();
+                myTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        ControleVeloActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                itineraire(false);
+                            }
+                        });
+                    }
+                }, 10000, 10000); // initial delay 30 second, interval 30 second
 
             }
         });
@@ -225,6 +243,8 @@ public class ControleVeloActivity extends AppCompatActivity {
         gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         assistanceTextView = (TextView) findViewById(R.id.assistanceNumber);
         distanceParcourue = (TextView) findViewById(R.id.distanceParcourue);
+        distanceRest = (TextView) findViewById(R.id.distanceRest);
+        timeRest = (TextView) findViewById(R.id.timeRest);
         buttonLess = (MaterialIconView) findViewById(R.id.buttonLess);
         buttonMore = (MaterialIconView) findViewById(R.id.buttonMore);
         seekBarSpeed = (SeekBar) findViewById(R.id.seekBarSpeed);
@@ -294,9 +314,17 @@ public class ControleVeloActivity extends AppCompatActivity {
         gMap.setMyLocationEnabled(true);
         gMap.setOnMyLocationChangeListener(new MyLocationChangeListener(distanceParcourue, gMap));
 
-
         final Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    public void itineraire(boolean animate)
+    {
+        ItineraireTask myTask = new ItineraireTask(ControleVeloActivity.this, gMap, iDrawerItemSearchItinerary.getDepart(), iDrawerItemSearchItinerary.getArrivee(), animate, distanceRest, timeRest);
+        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.HONEYCOMB)
+            myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else
+            myTask.execute();
     }
 
     @Override

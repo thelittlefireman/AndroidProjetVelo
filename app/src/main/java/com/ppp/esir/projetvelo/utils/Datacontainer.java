@@ -63,5 +63,4 @@ public class Datacontainer {
         new TinyDB(getActivity()).putString("password", password);
     }
 
-
 }
