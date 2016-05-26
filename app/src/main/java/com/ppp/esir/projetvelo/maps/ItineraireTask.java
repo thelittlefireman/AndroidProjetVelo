@@ -78,6 +78,8 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
         this.gMap = gMap;
         this.editDepart = editDepart;
         this.editArrivee = editArrivee;
+        if (!gMap.isMyLocationEnabled())
+            cancel(true);
         this.myLatitude = gMap.getMyLocation().getLatitude();
         this.myLongitude = gMap.getMyLocation().getLongitude();
         this.animate = animate;
@@ -91,7 +93,7 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
      */
     @Override
     protected void onPreExecute() {
-        if(animate)
+        if (animate)
             Toast.makeText(context, TOAST_MSG, Toast.LENGTH_LONG).show();
     }
 

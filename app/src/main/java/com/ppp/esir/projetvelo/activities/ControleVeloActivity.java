@@ -142,6 +142,7 @@ public class ControleVeloActivity extends AppCompatActivity {
     };
     private Drawer drawer;
     private IDrawerItemSearchItinerary iDrawerItemSearchItinerary;
+    public static String itineraireArrivee, itineraireDepart;
 
     private String getErreur(String data) {
         switch (data) {
@@ -187,6 +188,8 @@ public class ControleVeloActivity extends AppCompatActivity {
         iDrawerItemSearchItinerary = new IDrawerItemSearchItinerary(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                itineraireDepart = iDrawerItemSearchItinerary.getDepart();
+                itineraireArrivee = iDrawerItemSearchItinerary.getArrivee();
                 //Itineraire
                 itineraire(true);
                 if (myTimer != null)
@@ -322,7 +325,7 @@ public class ControleVeloActivity extends AppCompatActivity {
     }
 
     public void itineraire(boolean animate) {
-        ItineraireTask myTask = new ItineraireTask(ControleVeloActivity.this, gMap, iDrawerItemSearchItinerary.getDepart(), iDrawerItemSearchItinerary.getArrivee(), animate, distanceRest, timeRest);
+        ItineraireTask myTask = new ItineraireTask(ControleVeloActivity.this, gMap, itineraireDepart, itineraireArrivee, animate, distanceRest, timeRest);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
