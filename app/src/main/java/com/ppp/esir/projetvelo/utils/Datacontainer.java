@@ -14,6 +14,8 @@ public class Datacontainer {
     private static String username, password;
     private static User actualUser = null;
     private static boolean isConnected = false;
+    private static double myLatitudeStatic;
+    private static double myLongitudeStatic;
 
     public static User getActualUser() {
         return actualUser;
@@ -63,5 +65,19 @@ public class Datacontainer {
         new TinyDB(getActivity()).putString("password", password);
     }
 
+    public static double getMyLatitudeStatic() {
+        return myLatitudeStatic;
+    }
 
+    public static void setMyLatitudeStatic(double myLatitudeStatic) {
+        Datacontainer.myLatitudeStatic = myLatitudeStatic;
+    }
+
+    public static double getMyLongitudeStatic() {
+        return myLongitudeStatic;
+    }
+
+    public static void setMyLongitudeStatic(double myLongitudeStatic) {
+        Datacontainer.myLongitudeStatic = myLongitudeStatic;
+    }
 }

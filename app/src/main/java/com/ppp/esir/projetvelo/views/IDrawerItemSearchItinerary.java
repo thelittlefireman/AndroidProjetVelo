@@ -89,5 +89,10 @@ public class IDrawerItemSearchItinerary extends BaseDrawerItem<IDrawerItemSearch
         public Button getButtonSearch() {
             return buttonSearch;
         }
+
+        public Button getMyLocation() {
+            return myLocation;
+        }
     }
+
 }

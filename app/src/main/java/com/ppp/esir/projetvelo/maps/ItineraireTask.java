@@ -6,7 +6,9 @@ package com.ppp.esir.projetvelo.maps;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,6 +17,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.ppp.esir.projetvelo.activities.ControleVeloActivity;
+import com.ppp.esir.projetvelo.utils.Datacontainer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,6 +28,12 @@ import org.w3c.dom.NodeList;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -54,6 +64,8 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
     private double myLongitude;
     private String editDepart;
     private String editArrivee;
+    private boolean animate;
+    private HashMap<LatLng, Double> startPointsDistance;
 
     /*******************************************************/
     /** METHODES / FONCTIONS.
@@ -66,13 +78,15 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
      * @param editDepart
      * @param editArrivee
      */
-    public ItineraireTask(final Context context, final GoogleMap gMap, final String editDepart, final String editArrivee) {
+    public ItineraireTask(final Context context, final GoogleMap gMap, final String editDepart, final String editArrivee, boolean animate, TextView distanceRest, TextView timeRest) {
         this.context = context;
         this.gMap = gMap;
         this.editDepart = editDepart;
         this.editArrivee = editArrivee;
         this.myLatitude = gMap.getMyLocation().getLatitude();
         this.myLongitude = gMap.getMyLocation().getLongitude();
+        this.animate = animate;
+        startPointsDistance = new HashMap<LatLng, Double>();
     }
 
     /**
@@ -90,15 +104,25 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
     protected Boolean doInBackground(Void... params) {
         try {
             //Construction de l'url à appeler
-            final StringBuilder url = new StringBuilder("http://maps.googleapis.com/maps/api/directions/xml?sensor=false&alternatives=true&language=fr&mode=bicycling");
+            final StringBuilder url = new StringBuilder("http://maps.googleapis.com/maps/api/directions/xml?sensor=false&language=fr&mode=bicycling");
             url.append("&origin=");
+            if(animate)
+            {
+                Datacontainer.setMyLatitudeStatic(this.myLatitude);
+                Datacontainer.setMyLongitudeStatic(this.myLongitude);
+            }
             if (editDepart.equals("Ma position"))
-                url.append(this.myLatitude + "," + this.myLongitude);
+                url.append(Datacontainer.getMyLatitudeStatic() + "," + Datacontainer.getMyLongitudeStatic());
             else
                 url.append(editDepart.replace(' ', '+'));
             url.append("&destination=");
             url.append(editArrivee.replace(' ', '+'));
 
+            if(!animate)
+            {
+                url.append("&waypoints=optimize:true|");
+                url.append(this.myLatitude + "," + this.myLongitude);
+            }
             //Appel du web service
             final InputStream stream = new URL(url.toString()).openStream();
 
@@ -127,7 +151,12 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
 
                 if (nodeStep.getNodeType() == Node.ELEMENT_NODE) {
                     final Element elementStep = (Element) nodeStep;
-
+                    final Element distanceNode = (Element) elementStep.getElementsByTagName("distance").item(0);
+                    double distance = Double.valueOf(distanceNode.getElementsByTagName("text").item(0).getTextContent());
+                    final Element elementStartPoint = (Element) elementStep.getElementsByTagName("start_location");
+                    double lat = Double.valueOf(elementStartPoint.getElementsByTagName("lat").item(0).getTextContent());
+                    double lng = Double.valueOf(elementStartPoint.getElementsByTagName("lng").item(0).getTextContent());
+                    startPointsDistance.put(new LatLng(lat,lng), distance);
                     //On décode les points du XML
                     decodePolylines(elementStep.getElementsByTagName("points").item(0).getTextContent());
                 }
@@ -206,7 +235,8 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
 
             //On met à jour la carte
             gMap.clear();
-            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(this.myLatitude, this.myLongitude), 18));
+            if(this.animate)
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(this.myLatitude, this.myLongitude), 18));
             gMap.addMarker(markerA);
             gMap.addPolyline(polylines);
             gMap.addMarker(markerB);

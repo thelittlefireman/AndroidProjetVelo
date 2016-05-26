@@ -15,12 +15,28 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/map">
+            <TextView
+                android:id="@+id/distanceRest"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/timeRest"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
         <fragment
             android:id="@+id/map"
             class="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/includeVeloPanel"
+            android:layout_above="@id/includeVeloPanel"
             android:layout_alignParentTop="true" />
 
         <include
@@ -32,5 +48,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true" />
     </RelativeLayout>
+
 
 </RelativeLayout>
