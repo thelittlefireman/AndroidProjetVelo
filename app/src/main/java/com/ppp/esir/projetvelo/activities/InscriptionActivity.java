@@ -41,6 +41,12 @@ public class InscriptionActivity extends SingleInputFormActivity {
                 .errorResId(R.string.login_error)
                 .detailsResId(R.string.login_exemple)
                 .inputType(InputType.TYPE_CLASS_TEXT)
+                .validator(new TextStep.Validator() {
+                    @Override
+                    public boolean validate(String input) {
+                        return input.length() > 0;
+                    }
+                })
                 .build());
 
         steps.add(new TextStep.Builder(this, DATA_KEY_EMAIL)
