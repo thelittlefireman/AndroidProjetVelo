@@ -14,9 +14,11 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.ppp.esir.projetvelo.activities.ControleVeloActivity;
 import com.ppp.esir.projetvelo.utils.Datacontainer;
 
 import org.w3c.dom.Document;
@@ -279,7 +281,30 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
             //On met à jour la carte
             gMap.clear();
             if (this.animate) {
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(this.myLatitude, this.myLongitude), 18));
+                if(ControleVeloActivity.mapLock)
+                {
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(this.myLatitude, this.myLongitude))             // Sets the center of the map to current location
+                            .zoom(18)                   // Sets the zoom
+                            .bearing(gMap.getMyLocation().getBearing()) // Sets the orientation of the camera to east
+                            .tilt(60)                   // Sets the tilt of the camera to 30 degrees
+                            .build();
+                    gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
+
+                        public void onFinish() {
+                            gMap.getUiSettings().setScrollGesturesEnabled(true);
+                        }
+
+                        public void onCancel() {
+                            gMap.getUiSettings().setAllGesturesEnabled(true);
+
+                        }
+                    });
+                }
+                else
+                {
+                    gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(this.myLatitude, this.myLongitude), 18));
+                }
                 gMap.addMarker(markerA);
             }
             gMap.addPolyline(polylines);

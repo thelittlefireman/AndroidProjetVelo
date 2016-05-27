@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
 import static com.ppp.esir.projetvelo.R.id.iconBattery;
 
 public class ControleVeloActivity extends AppCompatActivity {
-    public static boolean mapLock = false;
+    public static boolean mapLock;
     public static String itineraireArrivee, itineraireDepart;
     private final int BATTERY_ELEMENT = 1;
     private final int SPEED_ELEMENT = 2;
@@ -180,6 +180,8 @@ public class ControleVeloActivity extends AppCompatActivity {
         setContentView(R.layout.activity_controle_velo);
         Datacontainer.setActivity(this);
         ProjetVeloCommandsUtils.initProjetVeloCommandsUtils(this);
+
+        ControleVeloActivity.mapLock = false;
 
         Datacontainer.setItineraireSetting(false);
         Datacontainer.setArrive("");
