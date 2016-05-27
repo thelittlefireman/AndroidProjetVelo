@@ -61,7 +61,7 @@ public class RequeteConfigurator {
     public enum ApiRequete {
         AUTHENTIFICATION("android/authentification"),
         GET_INFORMATIONS("android/infosUser"),
-        INSCRIPTION("android/ceerUser"),
+        INSCRIPTION("android/creerUser"),
         ADD_DEPLACEMENT("android/ajoutDeplacement");
 
         private final String text;
