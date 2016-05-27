@@ -248,10 +248,12 @@ public class ControleVeloActivity extends AppCompatActivity {
                         .tilt(0)                   // Sets the tilt of the camera to 0 degrees
                         .build();
                 gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+
                 if (myTimer != null)
                     myTimer.cancel();
                 drawer.closeDrawer();
+
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
             }
         };
 
@@ -357,7 +359,7 @@ public class ControleVeloActivity extends AppCompatActivity {
                                 .target(new LatLng(gMap.getMyLocation().getLatitude(), gMap.getMyLocation().getLongitude()))             // Sets the center of the map to current location
                                 .zoom(18)                   // Sets the zoom
                                 .bearing(gMap.getCameraPosition().bearing) // Sets the orientation of the camera to east
-                                .tilt(50)                   // Sets the tilt of the camera to 0 degrees
+                                .tilt(60)                   // Sets the tilt of the camera to 0 degrees
                                 .build();
                         gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     }

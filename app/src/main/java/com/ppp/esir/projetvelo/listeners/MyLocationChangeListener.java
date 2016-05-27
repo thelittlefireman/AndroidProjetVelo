@@ -47,7 +47,7 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
             int m = (int) Math.ceil(distanceParcourue) % 1000;
             String metre = (m > 0 ? m + " m" : "");
             String metre2 = (m > 0 ? "," + m : "");
-            String distanceText = (km > 0 ? km + "," + metre2 + "Km " : metre);
+            String distanceText = (km > 0 ? km + metre2 + "Km " : metre);
             this.distance.setText(distanceText);
         }
         if (!firstTime && ControleVeloActivity.mapLock)
@@ -91,7 +91,7 @@ public class MyLocationChangeListener implements GoogleMap.OnMyLocationChangeLis
                         .target(coord)             // Sets the center of the map to current location
                         .zoom(minZoom)                   // Sets the zoom
                         .bearing(location.getBearing()) // Sets the orientation of the camera to east
-                        .tilt(50)                   // Sets the tilt of the camera to 30 degrees
+                        .tilt(60)                   // Sets the tilt of the camera to 30 degrees
                         .build();
             }
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
