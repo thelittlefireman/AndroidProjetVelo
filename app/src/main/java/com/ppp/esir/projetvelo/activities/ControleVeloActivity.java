@@ -181,6 +181,10 @@ public class ControleVeloActivity extends AppCompatActivity {
         Datacontainer.setActivity(this);
         ProjetVeloCommandsUtils.initProjetVeloCommandsUtils(this);
 
+        Datacontainer.setItineraireSetting(false);
+        Datacontainer.setArrive("");
+        Datacontainer.setDepart("");
+        Datacontainer.setLastPoint(null);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
