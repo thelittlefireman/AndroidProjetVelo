@@ -460,6 +460,14 @@ public class ControleVeloActivity extends AppCompatActivity {
             //   Log.d(this.getClass().getName(), "Connect request result=" + result);
         }
         invalidateOptionsMenu();
+        if(Datacontainer.isItineraireSetting())
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+        else
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+        }
     }
 
     public BluetoothLeService getmBluetoothLeService() {
