@@ -3,13 +3,13 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.github.ben-manes.versions'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         applicationId "com.ppp.esir.projetvelo"
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -26,10 +26,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
     compile 'com.google.android.gms:play-services:8.3.0'
-    compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.android.support:support-v4:24.2.1'
     compile 'io.palaima:smoothbluetooth:0.2.0-SNAPSHOT'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.github.nicolasjafelle:refreshmenuitem:1.0'
