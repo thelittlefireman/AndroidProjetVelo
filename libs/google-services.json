@@ -1,0 +1,57 @@
+{
+  "project_info": {
+    "project_number": "282502110397",
+    "project_id": "projetvelo-829f2"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282502110397:android:8c8ccc79e28e9784",
+        "android_client_info": {
+          "package_name": "com.ppp.esir.projetvelo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "282502110397-t8ojs515gmaq1mhprsn4u8d59q1r83mu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ppp.esir.projetvelo",
+            "certificate_hash": "1430AF94CD3C4AC3EC5C83ED4C435FE69221F8E1"
+          }
+        },
+        {
+          "client_id": "282502110397-jmrtd1ho7sgh7nigdi0efodl45ca6i3m.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "282502110397-luiebuv7ie9f1veuafmidrtij18mlnc7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsGsjqN_w3CQcMlfUuOZEGrtvWOOXjUiY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "282502110397-jmrtd1ho7sgh7nigdi0efodl45ca6i3m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
